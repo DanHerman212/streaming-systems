@@ -1,3 +1,10 @@
+output "pubsub_topic_id" {
+  value = module.pubsub.topic_id
+}
+
+output "pubsub_subscription_id" {
+  value = module.pubsub.subscription_id
+}
 output "enabled_apis" {
   value = module.apis.enabled_apis
 }

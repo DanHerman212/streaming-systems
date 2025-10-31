@@ -51,7 +51,7 @@ resource "google_cloud_run_service" "event_task_enqueuer" {
         }
         env {
           name  = "EVENT_FEED_PROCESSOR_SERVICE_URL"
-          value = var.event_feed_processor_service_url
+          value = google_cloud_run_service.mta_processor_endpoint.status[0].url
         }
         env {
           name  = "TASKS_SA_EMAIL"

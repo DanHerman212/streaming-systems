@@ -1,3 +1,9 @@
+module "pubsub" {
+  source            = "./modules/pubsub"
+  project_id        = var.project_id
+  topic_name        = "mta-gtfs-ace"
+  subscription_name = "mta-gtfs-ace-sub"
+}
 module "cloud_run" {
   source      = "./modules/cloud_run"
   project_id  = var.project_id
