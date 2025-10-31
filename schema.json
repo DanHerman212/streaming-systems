@@ -1,0 +1,17 @@
+[
+  {"name": "unique_event_id", "type": "STRING"},
+  {"name": "feed_header_timestamp", "type": "TIMESTAMP"},
+  {"name": "entity_id", "type": "STRING"},
+  {"name": "trip_id", "type": "STRING"},
+  {"name": "start_time", "type": "STRING"},
+  {"name": "start_date", "type": "STRING"},
+  {"name": "route_id", "type": "STRING"},
+  {"name": "stop_id", "type": "STRING"},
+  {"name": "vehicle_timestamp", "type": "TIMESTAMP"},
+  {"name": "current_status", "type": "STRING"},
+  {"name": "current_stop_sequence", "type": "INTEGER"},
+  {"name": "stop_name", "type": "STRING"},
+  {"name": "stop_lat", "type": "FLOAT"},
+  {"name": "stop_lon", "type": "FLOAT"},
+  {"name": "direction", "type": "STRING"}
+]
