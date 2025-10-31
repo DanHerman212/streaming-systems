@@ -58,3 +58,7 @@ The Terraform script will go through this order of operations:<br><br>
 5. Create Scheduler Job
 
 </font><br>
+
+# Dataflow Dashboard
+It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
+![Dataflow Dashboard](/images/dataflow_dashboard.png)

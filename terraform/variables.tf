@@ -1,3 +1,27 @@
+# For Cloud Run services
+variable "mta_subway_feed_url" {
+  description = "NYC Subway Feed URL"
+  type        = string
+  default     = ""
+}
+
+variable "pubsub_topic_id" {
+  description = "Pub/Sub Topic ID"
+  type        = string
+  default     = ""
+}
+
+variable "mta_processor_endpoint_image" {
+  description = "Container image for mta-processor-endpoint"
+  type        = string
+  default     = ""
+}
+
+variable "event_task_enqueuer_image" {
+  description = "Container image for event-task-enqueuer"
+  type        = string
+  default     = ""
+}
 variable "project_id" {
   description = "GCP project ID"
   type        = string
