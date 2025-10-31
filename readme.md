@@ -28,31 +28,32 @@ The architecture uses the following GCP services:<br>
 The implementation is quite simple, it's a 4 step process:<br><br>
 To get started, please launch a new <img src="images/shell.png" alt="drawing" width="100"/> 
 
-Step 1: Containerize Applications <br>
+## Step 1: Containerize Applications <br>
 ```shell
 ./build_containers.sh
 ```
 Once the script completes go to step 2
 
-Step 2: Deploy Infrastructure <br>
+## Step 2: Deploy Infrastructure <br>
 ```shell
 cd terraform
 terraform init
 terraform apply
 ```
 Once the infrastructure is deployed go to step 3<br>
-Step 3: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
+## Step 3: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
 ```shell
 python dataflow/deploy_dataflow.py
 ``` 
 Once Dataflow is deployed go to step 4<br>
-Step 4:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
+## Step 4:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
 ![Cloud Scheduler](/images/scheduler.png)
 
 
 <br>
 
-# Dataflow Dashboard
+## Dataflow Dashboard
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
+<br>
 ![Dataflow Dashboard](/images/dataflow.png)
 </font>
