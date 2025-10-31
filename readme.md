@@ -26,6 +26,8 @@ The architecture uses the following GCP services:<br>
 ## Most implementation is automated through <img src="tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
 The implementation is quite simple, it's a 3 step process:<br><br>
+To get started, please launch a new <img src="shell.png" alt="drawing" width="80"/> 
+
 Step 1: Containerize Applications <br>
 ```shell
 ./build_containers.sh
