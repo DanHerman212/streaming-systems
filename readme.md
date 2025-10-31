@@ -7,7 +7,7 @@ Production grade data pipelines capable of processing event streams in real time
 
 ![Video Title](https://www.youtube.com/watch?v=VIDEO_ID)<br>
 <br>
-For this particular implementation, the architecture is setup on GCP and is completely serverless.  The design is modular and is based on a real time data warehouse, that delivers between 7 second to 35 second data processing times (dependant on event stream).  The warehouse can be swapped for a nosql database to support immediate i/o for real time applications.<br>
+For this particular implementation, the architecture is setup on GCP and is completely serverless.  The design is modular with a primary goal to provide a real time data warehouse, delivering data between 7 - 35 seconds after it's created (dependant on event stream).  The warehouse can be swapped for a nosql database such as BigTable, to support lower latency i/o for real time applications.<br>
 <br>
 
 ![Architecture Diagram](architecture2.png) <br>
