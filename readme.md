@@ -23,7 +23,7 @@ The architecture uses the following GCP services:<br>
 </font>
 
 ## Implementation Steps
-Most implementation is automated through <img src="tf.png" alt="drawing" width="50"/><br>
+## Most implementation is automated through <img src="tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
 The implementation is quite simple, it's a 3 step process:<br><br>
 Step 1: Containerize Applications <br>
@@ -46,13 +46,12 @@ python dataflow/deploy_dataflow.py
 
 <font size="4">
 
+The Terraform script will go through this order of operations:<br><br>
 1. Enable APIs
-2. Containerize Applications 
 3. Create Service Accounts and Grant Permissions
 4. Create Cloud Run Services:
     - Event Processor
     - Task Queue
 5. Create Pub/Sub Topics and Subscriptions
 6. Create Scheduler Job
-7. Create Dataflow Job
 </font><br>
