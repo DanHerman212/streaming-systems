@@ -25,40 +25,34 @@ The architecture uses the following GCP services:<br>
 ## Implementation Steps
 ## Most implementation is automated through <img src="images/tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
-The implementation is quite simple, it's a 3 step process:<br><br>
+The implementation is quite simple, it's a 4 step process:<br><br>
 To get started, please launch a new <img src="images/shell.png" alt="drawing" width="100"/> 
 
 Step 1: Containerize Applications <br>
 ```shell
 ./build_containers.sh
 ```
+Once the script completes go to step 2
+
 Step 2: Deploy Infrastructure <br>
 ```shell
 cd terraform
 terraform init
 terraform apply
 ```
-Step 3: Deploy Dataflow Job <br>
+Once the infrastructure is deployed go to step 3<br>
+Step 3: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
 ```shell
 python dataflow/deploy_dataflow.py
 ``` 
-</font>
+Once Dataflow is deployed go to step 4<br>
+Step 4:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
+![Cloud Scheduler](/images/scheduler.png)
+
 
 <br>
 
-<font size="5">
-
-The Terraform script will go through this order of operations:<br><br>
-1. Enable APIs
-2. Create Service Accounts and Grant Permissions
-3. Create Cloud Run Services:
-    - Event Processor
-    - Task Queue
-4. Create Pub/Sub Topics and Subscriptions
-5. Create Scheduler Job
-
-</font><br>
-
 # Dataflow Dashboard
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
-![Dataflow Dashboard](/images/dataflow_dashboard.png)
+![Dataflow Dashboard](/images/dataflow.png)
+</font>
