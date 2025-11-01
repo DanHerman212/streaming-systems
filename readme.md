@@ -70,19 +70,19 @@ It will take 3 minutes for Dataflow to get up and running.  You can check the da
 
 ## Folder Structure
 ```
-├── dataflow
+├── dataflow # script for dataflow pipeline
 │   ├── dataflow.py
 │   ├── service_account.sh
 │   └── write_to_bq.sh
-├── event-processor
+├── event-processor # collects messages and sends them to pubsub from data feed
 │   ├── Dockerfile
 │   ├── app.py
 │   └── requirements.txt
-├── task-queue
+├── task-queue # distributes triggers to the event processor asynchronously every 20 seconds
 │   ├── Dockerfile
 │   ├── main.py
 │   └── requirements.txt
-├── terraform
+├── terraform # infrastructure as code using terraform
 │   ├── main.tf
 │   ├── modules
 │   │   ├── apis
@@ -95,8 +95,9 @@ It will take 3 minutes for Dataflow to get up and running.  You can check the da
 │   ├── outputs.tf
 │   ├── terraform.tfvars
 │   └── variables.tf
-├── utils
-└── z_images
+├── utils # utilities to build container images
+│   ├── build_containers.sh
+└── z_images # images for presentation
     ├── 0.5 Architecture.png
     ├── architecture2.png
     ├── dataflow.png
@@ -105,7 +106,7 @@ It will take 3 minutes for Dataflow to get up and running.  You can check the da
     ├── shell.png
     └── tf.png
 ├── readme.md
-├── schema.json
-├── stops.csv
+├── schema.json # BigQuery table schema for pipeline
+├── stops.csv # station names for MTA used to enrich dataset in pipeline
 ```
 <br>
