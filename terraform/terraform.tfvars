@@ -1,6 +1,8 @@
+# Storage module variables
+bq_dataset_id   = "streaming-systems"
+bq_table_id     = "realtime-updates"
+bq_table_schema = "schema.json"
 project_id = "your-gcp-project-id"
-# region     = "us-east1"
-# apis = ["run.googleapis.com", "pubsub.googleapis.com", "cloudscheduler.googleapis.com"]
 region     = "us-east1"
 
 # Cloud Run service variables

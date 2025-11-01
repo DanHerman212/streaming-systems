@@ -1,3 +1,21 @@
+# For storage module
+variable "bq_dataset_id" {
+  description = "BigQuery dataset ID"
+  type        = string
+  default     = "my_dataset"
+}
+
+variable "bq_table_id" {
+  description = "BigQuery table ID"
+  type        = string
+  default     = "my_table"
+}
+
+variable "bq_table_schema" {
+  description = "Path to BigQuery table schema JSON file"
+  type        = string
+  default     = "schema.json"
+}
 # For Cloud Run services
 variable "mta_subway_feed_url" {
   description = "NYC Subway Feed URL"

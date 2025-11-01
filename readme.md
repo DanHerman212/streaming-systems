@@ -10,7 +10,7 @@ Production grade data pipelines capable of processing event streams in real time
 For this particular implementation, the architecture is setup on GCP and is completely serverless.  The design is modular with a primary goal to provide a real time data warehouse, delivering data between 7 - 35 seconds after it's created (dependant on event stream).  The warehouse can be swapped for a nosql database such as BigTable, to support lower latency i/o for real time applications.<br>
 <br>
 
-![Architecture Diagram](/images/architecture2.png) <br>
+![Architecture Diagram](/z_images/architecture2.png) <br>
 <br><font size="4">
 The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
@@ -23,16 +23,21 @@ The architecture uses the following GCP services:<br>
 </font>
 
 ## Implementation Steps
-## Most implementation is automated through <img src="images/tf.png" alt="drawing" width="50"/><br>
+## Most implementation is automated through <img src="z_images/tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
 The implementation is quite simple, it's a 4 step process:<br><br>
-To get started, please launch a new <img src="images/shell.png" alt="drawing" width="100"/> 
+To get started, please launch a new <img src="z_images/shell.png" alt="drawing" width="100"/> 
 
 ## Step 1: Containerize Applications <br>
 ```shell
 ./build_containers.sh
 ```
-Once the script completes go to step 2
+Once the script completes update the .tfvars file with the image URIs and go to step 2<br>
+```shell
+# Replace your-project with your GCP project ID
+mta_processor_endpoint_image = "gcr.io/your-project/mta-processor"
+event_task_enqueuer_image    = "gcr.io/your-project/event-task-enqueuer"
+```
 
 ## Step 2: Deploy Infrastructure <br>
 ```shell
@@ -47,7 +52,7 @@ python dataflow/deploy_dataflow.py
 ``` 
 Once Dataflow is deployed go to step 4<br>
 ## Step 4:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
-![Cloud Scheduler](/images/scheduler.png)
+![Cloud Scheduler](/z_images/scheduler.png)
 
 
 <br>
@@ -55,5 +60,45 @@ Once Dataflow is deployed go to step 4<br>
 ## Dataflow Dashboard
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
 <br>
-![Dataflow Dashboard](/images/dataflow.png)
+
+![Dataflow Dashboard](/z_images/dataflow.png)
+
 </font>
+
+## SQL Anlaysis and Data Visualization
+<br>
+
+## Folder Structure
+```
+├── dataflow
+│   ├── dataflow.py
+│   ├── service_account.sh
+│   └── write_to_bq.sh
+├── event-processor
+│   ├── Dockerfile
+│   ├── app.py
+│   └── requirements.txt
+├── task-queue
+│   ├── Dockerfile
+│   ├── main.py
+│   └── requirements.txt
+├── terraform
+│   ├── main.tf
+│   ├── modules
+│   ├── outputs.tf
+│   ├── terraform.tfvars
+│   └── variables.tf
+├── utils
+└── z_images
+    ├── 0.5 Architecture.png
+    ├── architecture2.png
+    ├── dataflow.png
+    ├── image.png
+    ├── scheduler.png
+    ├── shell.png
+    └── tf.png
+├── readme.md
+├── schema.json
+├── stops.csv
+```
+<br>

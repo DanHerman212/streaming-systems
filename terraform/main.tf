@@ -1,3 +1,18 @@
+module "scheduler" {
+  source                = "./modules/scheduler"
+  project_id            = var.project_id
+  region                = var.region
+  service_url           = module.cloud_run.event_task_enqueuer_url
+  service_account_email = module.service_accounts.tasks_to_processor_sa_email
+}
+module "storage" {
+  source           = "./modules/storage"
+  project_id       = var.project_id
+  region           = var.region
+  bq_dataset_id    = var.bq_dataset_id
+  bq_table_id      = var.bq_table_id
+  bq_table_schema  = var.bq_table_schema
+}
 module "pubsub" {
   source            = "./modules/pubsub"
   project_id        = var.project_id

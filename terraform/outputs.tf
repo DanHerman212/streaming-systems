@@ -1,3 +1,6 @@
+output "scheduler_job_name" {
+  value = module.scheduler.scheduler_job_name
+}
 output "pubsub_topic_id" {
   value = module.pubsub.topic_id
 }
