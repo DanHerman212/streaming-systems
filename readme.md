@@ -3,10 +3,10 @@
 Production grade data pipelines capable of processing event streams in real time or near real time.
 <br><br>
 
-This implementation is connected to the [MTA real-time data feed](https://api.mta.info/#/subwayRealTimeFeeds) for the New York City subway system.  There are 8 separate feeds available, where this project is connected to the ACE subway line, which can be observed on the [subway diagram](https://www.mta.info/map/5256).  The subway system is the largest in the world, offering 475 stations, operating 24/7.  The ACE line includes roughly 30 stations and produces 1,200 unique trips per day on a weekday about 750 unique daily trips on weekends.<br>
+This implementation is connected to the [MTA real-time data feed](https://api.mta.info/#/subwayRealTimeFeeds) for the New York City subway system.  There are 8 separate feeds available, where this project is connected to the ACE subway line, which can be observed on the [subway diagram](https://www.mta.info/map/5256).<br>  <br>The subway system is the largest in the world, offering 475 stations, operating 24/7.  The ACE line includes roughly 30 stations and produces 1,200 unique daily trips on a weekday or 750 unique daily trips on weekends.<br>
 
-The MTA claims the feed is updated with each subway vehicle timestamp every 30 seconds.  However, we found the updates are produced from 7 - 35 seconds.
-We are polling the subway feed every 20 seconds, processing 3 messages per minute.  The feed produces nearly 1.25gb of data every 24 hrs with roughly, 250,000 updates per 24 hrs on a weekday and about 150,000 updates per weekend day.
+The MTA claims the feed is updated with each subway vehicle timestamp every 30 seconds.  However, we found the updates are produced from 5 - 25 seconds.
+We are polling the subway feed every 20 seconds, processing 3 messages per minute.  The feed produces nearly 1.25gb of data every 24 hrs with roughly, 250,000 updates per 24 hrs on a weekday and about 150,000 updates on a weekend.
 <br>
 
 # Video Tutorial
