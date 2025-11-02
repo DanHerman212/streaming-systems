@@ -41,10 +41,10 @@ Once the data is processed it will be written to BigQuery, available for analysi
 </font>
 
 ## Implementation Steps
-## Most implementation is automated through <img src="z_images/tf.png" alt="drawing" width="50"/><br>
+## Most implementation is automated through <img src="7-images/tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
 The implementation is quite simple, it's a 4 step process:<br><br>
-To get started, please launch a new <img src="z_images/shell.png" alt="drawing" width="100"/> 
+To get started, please launch a new <img src="7-images/shell.png" alt="drawing" width="100"/> 
 
 ## Step 1: Containerize Applications <br>
 ```shell
@@ -70,7 +70,7 @@ python dataflow/deploy_dataflow.py
 ``` 
 Once Dataflow is deployed go to step 4<br>
 ## Step 4:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
-![Cloud Scheduler](/z_images/scheduler.png)
+![Cloud Scheduler](/7-images/scheduler.png)
 
 
 <br>
@@ -79,12 +79,22 @@ Once Dataflow is deployed go to step 4<br>
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
 <br>
 
-![Dataflow Dashboard](/z_images/dataflow.png)
+![Dataflow Dashboard](/7-images/dataflow.png)
 
 </font>
 
 ## SQL Anlaysis and Data Visualization
+Queries can be found in the [sql folder](/5-sql) folder.<br>
+### Avg Time Between Trains and Frequency
+The scatterplot shows that the stations with the highest frequency of trains also have the lowest average time between train arrivals.
+![Avg Time Between Train Arrivals](/7-images/avg_time_bet_trains.png)
 <br>
+
+### Top 10 Busiest Stations
+![Top 10 Busiest Stations](/7-images/barplot.png)
+
+### Idle Time Per Station
+![Idle Time Per Station](/7-images/idle.png)
 
 ## Folder Structure
 ```

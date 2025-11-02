@@ -1,0 +1,7 @@
+Flask
+requests
+google-cloud-storage
+google-cloud-pubsub
+protobuf
+gtfs-realtime-bindings
+gunicorn
