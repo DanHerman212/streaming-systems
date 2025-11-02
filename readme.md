@@ -1,25 +1,43 @@
 # Stream Processing Systems
 <br>
-Production grade data pipelines capable of processing event streams in real time or near real time. <br>
+Production grade data pipelines capable of processing event streams in real time or near real time.
+<br><br>
+
+This implementation is connected to the [MTA real-time data feed](https://api.mta.info/#/subwayRealTimeFeeds) for the New York City subway system.  There are 8 separate feeds available, where this project is connected to the ACE subway line, which can be observed on the [subway diagram](https://www.mta.info/map/5256).  The subway system is the largest in the world, offering 475 stations, operating 24/7.  The ACE line includes roughly 30 stations and produces 1,200 unique trips per day on a weekday about 750 unique daily trips on weekends.<br>
+
+The MTA claims the feed is updated with each subway vehicle timestamp every 30 seconds.  However, we found the updates are produced from 7 - 35 seconds.
+We are polling the subway feed every 20 seconds, processing 3 messages per minute.  The feed produces nearly 1.25gb of data every 24 hrs with roughly, 250,000 updates per 24 hrs on a weekday and about 150,000 updates per weekend day.
 <br>
 
 # Video Tutorial
+This Tutorial will provide a comprehensive walk through on the project implementation and architecture.<br>
 
 ![Video Title](https://www.youtube.com/watch?v=VIDEO_ID)<br>
-<br>
-For this particular implementation, the architecture is setup on GCP and is completely serverless.  The design is modular with a primary goal to provide a real time data warehouse, delivering data between 7 - 35 seconds after it's created (dependant on event stream).  The warehouse can be swapped for a nosql database such as BigTable, to support lower latency i/o for real time applications.<br>
-<br>
+
 
 ![Architecture Diagram](/z_images/architecture2.png) <br>
 <br><font size="4">
 The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
-- Cloud Run: Serverless Application Execution<br>
-- Cloud Tasks: Queue Management<br>
-- Cloud Scheduler: Cron Jobs (Event Triggers) <br>
-- Pub/Sub: Message Broker<br>
-- Dataflow: Stream Processing Engine<br>
+There are two applications built with Flask that will be containerized to poll the MTA endpoint through Cloud Run.  The first application is the event processor, which fetches messages and publishes to pubsub.  The next application is a task queue, which will setup 3 tasks to poll the MTA endpoint.  The first task will get fired off immediately, the second task will be scheduled on a 20 second delay and the third on a 40 second delay  
+
+- Cloud Run: Serverless Application Execution
+The event processor and task queue will be deployed for execution on Cloud Run<br>
+
+- Cloud Tasks: Queue Management
+This is a workaround, since Cloud Run does not allow you to run a continuous loop in a container.  The container will time out after 12 minutes.  Cloud tasks allows us to distribute triggers to granular controls for long running tasks.  The task queue polls the data feed every 20 seconds<br>
+
+- Cloud Scheduler: Cron Jobs (Event Triggers)
+Creates event triggers on a schedule.  There is a constraint where the lowest time interval available is 1 minute.  This is a workaround for Cloud Run's 12 minute timeout limit.  The scheduler will trigger the task queue every minute to poll the MTA endpoint.
+
+- Pub/Sub: Message Broker
+Messages are fetched from the MTA and published to a pubsub topic.  There is a pubsub pull subscription setup with the consumer, which is Dataflow, the data processing engine.<br>
+
+- Dataflow: Stream Processing Engine
+Dataflow consumes messages, applies transformations and writes to a 'data sink'.  For this implementation there are 3 primary transforms, where we will first 1) Flatten 2) Filter and 3) Enrich.  The messages come in json and need to be flattened.  Then we will filter erroneous messages that are not relevant, finally we will enrich with the stops data including stop name and GIS data (lat lon) for interpretability and data visualization.
+
 - BigQuery: Data Warehouse
+Once the data is processed it will be written to BigQuery, available for analysis between 7 - 35 seconds after the data is generated.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.
 </font>
 
 ## Implementation Steps
