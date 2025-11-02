@@ -15,7 +15,7 @@ This Tutorial will provide a comprehensive walk through on the project implement
 ![Video Title](https://www.youtube.com/watch?v=VIDEO_ID)<br>
 
 
-![Architecture Diagram](/z_images/architecture2.png) <br>
+![Architecture Diagram](/7-images/architecture2.png) <br>
 <br><font size="4">
 The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
