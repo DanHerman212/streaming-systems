@@ -94,6 +94,7 @@ The scatterplot shows that the stations with the highest frequency of trains als
 ![Top 10 Busiest Stations](/7-images/barplot.png)
 
 ### Idle Time Per Station
+The map represents all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.
 ![Idle Time Per Station](/7-images/idle.png)
 
 ## Folder Structure
