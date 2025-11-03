@@ -65,3 +65,12 @@ resource "google_cloud_run_service" "event_task_enqueuer" {
     latest_revision = true
   }
 }
+
+# Grant Cloud Run Invoker role to the scheduler's service account for event-task-enqueuer
+resource "google_cloud_run_service_iam_member" "event_task_enqueuer_invoker" {
+  service    = google_cloud_run_service.event_task_enqueuer.name
+  location   = var.region
+  project    = var.project_id
+  role       = "roles/run.invoker"
+  member     = "serviceAccount:${var.tasks_sa_email}"
+}
