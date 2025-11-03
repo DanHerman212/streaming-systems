@@ -25,7 +25,7 @@ module "cloud_run" {
   project_id  = var.project_id
   region      = var.region
   mta_subway_feed_url = var.mta_subway_feed_url
-  pubsub_topic_id     = var.pubsub_topic_id
+  pubsub_topic_id     = module.pubsub.topic_name
   event_feed_processor_service_url = module.cloud_run.mta_processor_endpoint_url
   tasks_sa_email      = module.service_accounts.tasks_to_processor_sa_email
   mta_processor_endpoint_image = var.mta_processor_endpoint_image
