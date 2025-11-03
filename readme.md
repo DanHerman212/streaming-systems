@@ -89,7 +89,7 @@ Queries can be found in the [sql folder](/5-sql) folder.<br>
 
 ## Avg Time Between Trains and Frequency
 The average time waiting for a train and the frequency of trains on the ACE line during a 24 hour weekday period.
-![Avg Time Between Train Arrivals](/7-images/avg_time_bet_trains.png)
+![Avg Time Between Train Arrivals](/7-images/avg_time_bet_trains1.png)
 <br>
 
 # Top 10 Busiest Stations
