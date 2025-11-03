@@ -81,27 +81,27 @@ It will take 3 minutes for Dataflow to get up and running.  You can check the da
 
 ![Dataflow Dashboard](/7-images/dataflow.png)
 
-</font>
-
-## Data Dictionary
+# Data Dictionary
 Data definition can be found at [data dictionary page](data.md)<br>
 
-## SQL Anlaysis and Data Visualization
+# SQL Anlaysis and Data Visualization
 Queries can be found in the [sql folder](/5-sql) folder.<br>
 
-### Avg Time Between Trains and Frequency
-The scatterplot shows that the stations with the highest frequency of trains also have the lowest average time between train arrivals.
+## Avg Time Between Trains and Frequency
+The average time waiting for a train and the frequency of trains on the ACE line during a 24 hour weekday period.
 ![Avg Time Between Train Arrivals](/7-images/avg_time_bet_trains.png)
 <br>
 
-### Top 10 Busiest Stations
+# Top 10 Busiest Stations
+These are the busiest stations for the ACE line, based on total number of train arrivals in a 24 hour weekday period.
 ![Top 10 Busiest Stations](/7-images/barplot.png)
+Fun Fact: [Times Square station](https://www.mta.info/agency/new-york-city-transit/subway-bus-ridership-2024) has the most riders with 58 million paid passengers in 2024.
 
-### Idle Time Per Station
+# Idle Time Per Station
 The map represents all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.
 ![Idle Time Per Station](/7-images/idle.png)
-
-## Folder Structure
+---
+# Folder Structure
 ```
 ├── dataflow # script for dataflow pipeline
 │   ├── dataflow.py
@@ -142,4 +142,4 @@ The map represents all stations and average idle time per station.  Most station
 ├── schema.json # BigQuery table schema for pipeline
 ├── stops.csv # station names for MTA used to enrich dataset in pipeline
 ```
-<br>
+</font>
