@@ -72,13 +72,5 @@ resource "google_cloud_run_service_iam_member" "event_task_enqueuer_invoker" {
   location   = var.region
   project    = var.project_id
   role       = "roles/run.invoker"
-  member     = "serviceAccount:${var.tasks_sa_email}"
-}
-
-resource "google_cloud_run_service_iam_member" "event_task_enqueuer_invoker" {
-  service    = google_cloud_run_service.event_task_enqueuer.name
-  location   = var.region
-  project    = var.project_id
-  role       = "roles/run.invoker"
   member     = "serviceAccount:${var.scheduler_sa_email}"
 }
