@@ -60,7 +60,8 @@ gcloud services enable cloudresourcemanager.googleapis.com \
   --project=<your-project-id>
 ```
 
-## Step 2: Containerize Applications <br>
+## Step 2: Containerize Applications
+There is a script that will build the containers and push the images to the container registry.<br>
 Open the file editor and look for the `streaming-systems` folder<br>
 Look in the root directory and open `build_images.sh` <br>
 
@@ -69,8 +70,7 @@ You will first need to update your project id in the bash script.
 # update your project id in the build_images.sh script
 REPO="gcr.io/YOUR_PROJECT_ID"
 ```
-Return to the terminal to run the bash script<br>
-It will containerize the code and push the container to the container registry<br>
+Return to the terminal and navigate to the `streaming-systems` directory<br>
 ```shell
 # run the script from the root directory
 ./build_images.sh
@@ -90,6 +90,7 @@ After project variables are updated, go back to the terminal<br>
 and proceed to step 4<br>
 
 ## Step 4: Deploy Infrastructure <br>
+Now that you've containerized the applications, it's time to deploy the infrastructure with Terraform.<br>
 ```shell
 cd 4-terraform
 terraform init
