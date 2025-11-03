@@ -61,7 +61,7 @@ gcloud services enable cloudresourcemanager.googleapis.com \
 ```
 
 ## Step 2: Containerize Applications <br>
-Open the file editor<br>
+Open the file editor and look for the `streaming-systems` folder<br>
 Look in the root directory and open `build_images.sh` <br>
 
 You will first need to update your project id in the bash script.
