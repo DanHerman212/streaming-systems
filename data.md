@@ -1,4 +1,4 @@
-**Description:** Contains real-time subway vehicle position and trip update data.
+# DATA DICTIONARY
 
 | Column Name | Data Type | Description | Primary Key/Foreign Key | Nullable | Example Values |
 |---|---|---|---|---|---|
