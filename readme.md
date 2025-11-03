@@ -91,6 +91,7 @@ Return to the terminal and navigate to the `streaming-systems` directory<br>
 ```
 Once the script completes go back into the file editor<br>
 Go to `4-terraform` folder and update the .tfvars file with the image URIs<br>
+If you use the sample.tfvars file, you can just rename it to `terraform.tfvars` or it won't work<br>
 Now update the project-id<br>
 pro tip: there is a `sample.tfvars` file in the `4-terraform` folder<br>
 
