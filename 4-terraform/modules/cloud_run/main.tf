@@ -74,3 +74,12 @@ resource "google_cloud_run_service_iam_member" "event_task_enqueuer_invoker" {
   role       = "roles/run.invoker"
   member     = "serviceAccount:${var.scheduler_sa_email}"
 }
+
+# Grant Cloud Run Invoker role to tasks-to-processor-sa for mta-processor-endpoint
+resource "google_cloud_run_service_iam_member" "mta_processor_endpoint_invoker" {
+  service    = google_cloud_run_service.mta_processor_endpoint.name
+  location   = var.region
+  project    = var.project_id
+  role       = "roles/run.invoker"
+  member     = "serviceAccount:${var.tasks_sa_email}"
+}
