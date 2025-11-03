@@ -80,7 +80,8 @@ terraform apply
 Once the infrastructure is deployed go to step 3<br>
 ## Step 5: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
 ```shell
-python dataflow/dataflow.py
+cd 1-dataflow
+python dataflow.py
 ``` 
 Once Dataflow is deployed go to step 4<br>
 ## Step 6:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
