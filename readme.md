@@ -69,7 +69,7 @@ You will first need to update your project id in the bash script.
 # update your project id in the build_images.sh script
 REPO="gcr.io/YOUR_PROJECT_ID"
 ```
-Return to the terminal terminal to run the bash script<br>
+Return to the terminal to run the bash script<br>
 It will containerize the code and push the container to the container registry<br>
 ```shell
 # run the script from the root directory
@@ -95,15 +95,17 @@ cd 4-terraform
 terraform init
 terraform apply
 ```
+Once infrastructure is deployed prepare the Dataflow script<br>
 
-## Step 2: Update Project Variables in Scripts<br>
+## Step 5: Prepare and Launch Dataflow script<br>
 Use the following script to update dataflow:
+Please update your project id in the script<br>
 ```shell
 cd streaming-systems/1-dataflow
 ./replace_project_id.sh <YOUR_PROJECT_ID>
 ```
 
-Once the infrastructure is deployed go to step 3<br>
+Once the infrastructure is deployed go to step 5<br>
 ## Step 5: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
 ```shell
 cd 1-dataflow
