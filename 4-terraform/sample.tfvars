@@ -7,5 +7,6 @@ region     = "us-east1" # Update your region if required
 
 # Cloud Run service variables
 mta_subway_feed_url          = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace"
-mta_processor_endpoint_image = "gcr.io/your-project-id/mta-processor"
-event_task_enqueuer_image    = "gcr.io/your-project-id/event-task-enqueuer"
+
+mta_processor_endpoint_image = "us-east1-docker.pkg.dev/your-project-id/streaming-systems-repo/mta-processor"
+event_task_enqueuer_image    = "us-east1-docker.pkg.dev/your-project-id/streaming-systems-repo/event-task-enqueuer"

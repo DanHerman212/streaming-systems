@@ -1,9 +1,12 @@
 #!/bin/bash
 set -e
 
-REPO="gcr.io/YOUR_PROJECT_ID"
+REGION="YOUR_REGION"
+PROJECT="YOUR_PROJECT_ID"
+NAME="streaming-systems-repo"
+REPO="$REGION-docker.pkg.dev/$PROJECT/$NAME"
 
-# Build and push mta-processor image from 2-event-processor
+# Build and push mta-processor image
 echo "Building mta-processor image..."
 if docker build -t "$REPO/mta-processor" ./2-event-processor; then
   echo "Successfully built $REPO/mta-processor"
@@ -19,7 +22,7 @@ else
   exit 1
 fi
 
-# Build and push event-task-enqueuer image from 3-task-queue
+# Build and push event-task-enqueuer image
 echo "Building event-task-enqueuer image..."
 if docker build -t "$REPO/event-task-enqueuer" ./3-task-queue; then
   echo "Successfully built $REPO/event-task-enqueuer"

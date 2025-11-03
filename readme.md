@@ -61,14 +61,28 @@ gcloud services enable cloudresourcemanager.googleapis.com \
 ```
 
 ## Step 2: Containerize Applications
-There is a script that will build the containers and push the images to the container registry.<br>
+We will have to do 2 things here:<br>
+1) Create an Artifact Registry repository to store the container images<br>
+2) Build and push the container images to the repository<br>
+<br>
+Here is the command to create the repository:<br>
+Make sure to update your region and project id
+
+```shell
+gcloud artifacts repositories create streaming-systems-repo \
+  --repository-format=docker \
+  --location=YOUR_REGION \
+  --project=YOUR_PROJECT_ID
+```
+Now we will execute a script to containerize the code<br>
 Open the file editor and look for the `streaming-systems` folder<br>
 Look in the root directory and open `build_images.sh` <br>
 
-You will first need to update your project id in the bash script.
+You will first need to update your project id and region in the bash script
 ```shell
 # update your project id in the build_images.sh script
-REPO="gcr.io/YOUR_PROJECT_ID"
+REGION="YOUR_REGION"
+PROJECT="YOUR_PROJECT_ID"
 ```
 Return to the terminal and navigate to the `streaming-systems` directory<br>
 ```shell
@@ -83,8 +97,8 @@ pro tip: there is a `sample.tfvars` file in the `4-terraform` folder<br>
 ```shell
 # Replace your-project with your GCP project ID
 project_id = "your-project-id"
-mta_processor_endpoint_image = "gcr.io/your-project-id/mta-processor"
-event_task_enqueuer_image    = "gcr.io/your-project-id/event-task-enqueuer"
+mta_processor_endpoint_image = "us-east1-docker.pkg.dev/your-project-id/streaming-systems-repo/mta-processor"
+event_task_enqueuer_image    = "us-east1-docker.pkg.dev/your-project-id/streaming-systems-repo/event-task-enqueuer"
 ```
 After project variables are updated, go back to the terminal<br>
 and proceed to step 4<br>
