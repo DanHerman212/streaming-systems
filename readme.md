@@ -86,6 +86,8 @@ PROJECT="YOUR_PROJECT_ID"
 ```
 Return to the terminal and navigate to the `streaming-systems` directory<br>
 ```shell
+# return to the streaming-systems root directory
+cd streaming-systems
 # run the script from the root directory
 ./build_images.sh
 ```
