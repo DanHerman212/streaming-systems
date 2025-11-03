@@ -49,34 +49,50 @@ To get started, please launch a new <img src="7-images/shell.png" alt="drawing" 
 ## Step 1:Clone the Repository<br>
 ```shell
 git clone https://github.com/your-username/streaming-systems.git
-cd streaming-systems
+```
+## Step 2: Enable APIs:
+Update project flag at the end of command
+```shell
+gcloud services enable cloudresourcemanager.googleapis.com \
+  cloudtasks.googleapis.com \
+  pubsub.googleapis.com \
+  iam.googleapis.com \
+  --project=<your-project-id>
+```
+
+## Step 2: Containerize Applications <br>
+You will first need to update your project id in the bash script.
+```shell
+# update your project id in the build_images.sh script
+REPO="gcr.io/YOUR_PROJECT_ID"
+
+# then run the script from the root directory
+./build_images.sh
+```
+
+Once the script completes update the .tfvars file with the image URIs<br>
+then project-id and go to step 2<br>
+```shell
+# Replace your-project with your GCP project ID
+project_id = "your-project-id"
+mta_processor_endpoint_image = "gcr.io/your-project-id/mta-processor"
+event_task_enqueuer_image    = "gcr.io/your-project-id/event-task-enqueuer"
+```
+
+## Step 4: Deploy Infrastructure <br>
+```shell
+cd 4-terraform
+terraform init
+terraform apply
 ```
 
 ## Step 2: Update Project Variables in Scripts<br>
 Use the following script to update dataflow:
 ```shell
-cd 1-dataflow
-./replace_project_id.sh YOUR_PROJECT_ID
+cd streaming-systems/1-dataflow
+./replace_project_id.sh <YOUR_PROJECT_ID>
 ```
 
-## Step 3: Containerize Applications <br>
-```shell
-cd 6-utils
-./build_containers.sh
-```
-Once the script completes update the .tfvars file with the image URIs and go to step 2<br>
-```shell
-# Replace your-project with your GCP project ID
-mta_processor_endpoint_image = "gcr.io/your-project/mta-processor"
-event_task_enqueuer_image    = "gcr.io/your-project/event-task-enqueuer"
-```
-
-## Step 4: Deploy Infrastructure <br>
-```shell
-cd terraform
-terraform init
-terraform apply
-```
 Once the infrastructure is deployed go to step 3<br>
 ## Step 5: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
 ```shell

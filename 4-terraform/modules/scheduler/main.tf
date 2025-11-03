@@ -11,5 +11,4 @@ resource "google_cloud_scheduler_job" "trigger_event_task_enqueuer" {
       service_account_email = var.service_account_email
     }
   }
-  state = "PAUSED" # job is created but not enabled
 }
