@@ -83,8 +83,11 @@ It will take 3 minutes for Dataflow to get up and running.  You can check the da
 
 </font>
 
+
 ## SQL Anlaysis and Data Visualization
 Queries can be found in the [sql folder](/5-sql) folder.<br>
+## Data Dictionary
+Data definition can be found at [data.md](data.md).<br>
 ### Avg Time Between Trains and Frequency
 The scatterplot shows that the stations with the highest frequency of trains also have the lowest average time between train arrivals.
 ![Avg Time Between Train Arrivals](/7-images/avg_time_bet_trains.png)
