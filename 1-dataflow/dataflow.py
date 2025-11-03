@@ -5,12 +5,13 @@ import json
 import csv
 import pytz
 
-PROJECT_ID = "streaming-systems-245"
+PROJECT_ID = "<your-project-id>"
 BIGQUERY_DATASET = "mta_updates"
-BIGQUERY_TABLE = "streaming-systems-245.mta_updates.realtime_updates"
+BIGQUERY_TABLE = "<your-project-id>.mta_updates.realtime_updates"
 PUBSUB_SUBSCRIPTION = "mta-gtfs-ace-sub"
-GCS_STOPS_CSV_PATH = "gs://dataflow-enrichment-bucket-245/stops.csv"
+GCS_STOPS_CSV_PATH = "gs://<your-project-id>-enrichment"
 FEED_TZ = pytz.timezone('America/New_York')
+REGION = "us-east1" #update your region
 
 REQUIRED_FIELDS = [
     'unique_event_id', 'feed_header_timestamp', 'entity_id', 'trip_id', 'start_time', 'start_date',
@@ -134,14 +135,14 @@ def run():
     options = PipelineOptions(
         streaming=True,
         project=PROJECT_ID,
-        region='us-east1',
+        region=REGION,
         runner='DataflowRunner',
-        temp_location='gs://streaming-systems-245-dataflow-temp',
-        staging_location='gs://streaming-systems-245-dataflow-temp',
+        temp_location="gs://<your-project-id>-dataflow-temp"
+        staging_location="gs://<your-project-id>-dataflow-staging"
         num_workers=2,
         max_num_workers=5,
         worker_machine_type='n2-highmem-16',
-        job_name='dataflow-1029-optimized-w10-3mpm'
+        job_name='<your-project-id>-dataflow-streaming-pipeline'
     )
     options.view_as(StandardOptions).streaming = True
     options.view_as(SetupOptions).save_main_session = True
