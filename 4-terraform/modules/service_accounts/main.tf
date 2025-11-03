@@ -52,3 +52,17 @@ resource "google_project_iam_member" "enqueuer_to_tasks_sa_roles" {
   role    = each.value
   member  = "serviceAccount:${google_service_account.enqueuer_to_tasks_sa.email}"
 }
+
+# Service Account: scheduler-to-enqueuer-sa
+resource "google_service_account" "scheduler_to_enqueuer_sa" {
+  account_id   = "scheduler-to-enqueuer-sa"
+  display_name = "Scheduler to Enqueuer Service Account"
+}
+resource "google_project_iam_member" "scheduler_to_enqueuer_sa_roles" {
+  for_each = toset([
+    "roles/run.invoker"
+  ])
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.scheduler_to_enqueuer_sa.email}"
+}

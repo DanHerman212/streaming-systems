@@ -4,7 +4,7 @@ module "scheduler" {
   project_id            = var.project_id
   region                = var.region
   service_url           = module.cloud_run.event_task_enqueuer_url
-  service_account_email = module.service_accounts.tasks_to_processor_sa_email
+  service_account_email = module.service_accounts.scheduler_to_enqueuer_sa_email
 }
 module "storage" {
   source           = "./modules/storage"
