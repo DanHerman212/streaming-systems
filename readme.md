@@ -46,12 +46,12 @@ Once the data is processed it will be written to BigQuery, available for analysi
 The implementation is quite simple, it's a 6 step process:<br><br>
 To get started, please launch a new <img src="7-images/shell.png" alt="drawing" width="100"/> 
 
-## Step 1:Clone the Repository<br>
+## Step 1: Clone the Repository<br>
 ```shell
 git clone https://github.com/your-username/streaming-systems.git
 ```
 ## Step 2: Enable APIs:
-Update project flag at the end of command
+Update the project flag at the end of this command
 ```shell
 gcloud services enable cloudresourcemanager.googleapis.com \
   cloudtasks.googleapis.com \
@@ -61,23 +61,33 @@ gcloud services enable cloudresourcemanager.googleapis.com \
 ```
 
 ## Step 2: Containerize Applications <br>
+Open the file editor<br>
+Look in the root directory and open `build_images.sh` <br>
+
 You will first need to update your project id in the bash script.
 ```shell
 # update your project id in the build_images.sh script
 REPO="gcr.io/YOUR_PROJECT_ID"
-
-# then run the script from the root directory
+```
+Return to the terminal terminal to run the bash script<br>
+It will containerize the code and push the container to the container registry<br>
+```shell
+# run the script from the root directory
 ./build_images.sh
 ```
+Once the script completes go back into the file editor<br>
+Go to `4-terraform` folder and update the .tfvars file with the image URIs<br>
+Now update the project-id<br>
+pro tip: there is a `sample.tfvars` file in the `4-terraform` folder<br>
 
-Once the script completes update the .tfvars file with the image URIs<br>
-then project-id and go to step 2<br>
 ```shell
 # Replace your-project with your GCP project ID
 project_id = "your-project-id"
 mta_processor_endpoint_image = "gcr.io/your-project-id/mta-processor"
 event_task_enqueuer_image    = "gcr.io/your-project-id/event-task-enqueuer"
 ```
+After project variables are updated, go back to the terminal<br>
+and proceed to step 4<br>
 
 ## Step 4: Deploy Infrastructure <br>
 ```shell
