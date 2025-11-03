@@ -97,9 +97,11 @@ terraform apply
 ```
 Once infrastructure is deployed prepare the Dataflow script<br>
 
-## Step 5: Prepare and Launch Dataflow script<br>
-Use the following script to update dataflow:
-Please update your project id in the script<br>
+## Step 5: Prepare and Launch Dataflow Pipeline<br>
+There are a few places where project ID needs to be updated.<bR>
+I created a bash script that will update all fields for you.<br>
+please execute the command below, replacing `<YOUR_PROJECT_ID>` with your actual GCP project ID and it will update your dataflow script.<bR>
+
 ```shell
 cd streaming-systems/1-dataflow
 ./replace_project_id.sh <YOUR_PROJECT_ID>
