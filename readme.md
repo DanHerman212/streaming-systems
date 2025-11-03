@@ -95,7 +95,7 @@ The average time waiting for a train and the frequency of trains on the ACE line
 # Top 10 Busiest Stations
 These are the busiest stations for the ACE line, based on total number of train arrivals in a 24 hour weekday period.
 ![Top 10 Busiest Stations](/7-images/barplot.png)
-Fun Fact: [Times Square station](https://www.mta.info/agency/new-york-city-transit/subway-bus-ridership-2024) has the most riders with 58 million paid passengers in 2024.
+Fun Fact: [42-St Port Authority Terminal](https://www.mta.info/agency/new-york-city-transit/subway-bus-ridership-2024) (Times Square) has the most riders with 58 million paid passengers in 2024.
 
 # Idle Time Per Station
 The map represents all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.

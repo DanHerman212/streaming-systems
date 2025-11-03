@@ -1,5 +1,4 @@
-# DATA DICTIONARY
-
+# Data Dictionary
 | Column Name | Data Type | Description | Primary Key/Foreign Key | Nullable | Example Values |
 |---|---|---|---|---|---|
 | `feed_header_timestamp` | `TIMESTAMP` | Message timestamp coming directly from MTA GTFS | - | NO | "2025-10-24 13:59:58 UTC" |

@@ -61,4 +61,5 @@ module "cloud_tasks" {
   source     = "./modules/cloud_tasks"
   project_id = var.project_id
   region     = var.region
+  
 }
