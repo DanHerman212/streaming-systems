@@ -43,11 +43,19 @@ Once the data is processed it will be written to BigQuery, available for analysi
 ## Implementation Steps
 ## Most implementation is automated through <img src="7-images/tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
-The implementation is quite simple, it's a 4 step process:<br><br>
+The implementation is quite simple, it's a 5 step process:<br><br>
 To get started, please launch a new <img src="7-images/shell.png" alt="drawing" width="100"/> 
 
-## Step 1: Containerize Applications <br>
+## Step 1: Update Project Variables in Scripts<br>
+Use the following script to update dataflow:
 ```shell
+cd 1-dataflow
+./replace_project_id.sh YOUR_PROJECT_ID
+```
+
+## Step 2: Containerize Applications <br>
+```shell
+cd 6-utils
 ./build_containers.sh
 ```
 Once the script completes update the .tfvars file with the image URIs and go to step 2<br>
@@ -57,19 +65,19 @@ mta_processor_endpoint_image = "gcr.io/your-project/mta-processor"
 event_task_enqueuer_image    = "gcr.io/your-project/event-task-enqueuer"
 ```
 
-## Step 2: Deploy Infrastructure <br>
+## Step 3: Deploy Infrastructure <br>
 ```shell
 cd terraform
 terraform init
 terraform apply
 ```
 Once the infrastructure is deployed go to step 3<br>
-## Step 3: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
+## Step 4: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
 ```shell
-python dataflow/deploy_dataflow.py
+python dataflow/dataflow.py
 ``` 
 Once Dataflow is deployed go to step 4<br>
-## Step 4:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
+## Step 5:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
 ![Cloud Scheduler](/7-images/scheduler.png)
 
 
