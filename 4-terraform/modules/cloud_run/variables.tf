@@ -41,3 +41,8 @@ variable "tasks_sa_email" {
   description = "Tasks to Processor Service Account Email"
   type        = string
 }
+
+variable "scheduler_sa_email" {
+  description = "Service account email for Cloud Scheduler"
+  type        = string
+}

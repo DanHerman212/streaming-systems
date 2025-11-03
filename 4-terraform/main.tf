@@ -31,6 +31,7 @@ module "cloud_run" {
   mta_processor_endpoint_image = var.mta_processor_endpoint_image
   event_task_enqueuer_image    = var.event_task_enqueuer_image
   task_queue_name              = module.cloud_tasks.event_feed_queue_name
+  scheduler_sa_email = module.service_accounts.scheduler_to_enqueuer_sa_email
 }
 terraform {
   required_version = ">= 1.0.0"

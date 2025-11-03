@@ -5,6 +5,8 @@ bq_table_schema = "schema.json"
 project_id = "your-project-id"
 region     = "us-east1" # Update your region if required
 
+
+
 # Cloud Run service variables
 mta_subway_feed_url          = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace"
 
