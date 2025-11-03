@@ -34,5 +34,5 @@ resource "google_storage_bucket" "enrichment" {
 resource "google_storage_bucket_object" "stops_csv" {
   name   = "stops.csv"
   bucket = google_storage_bucket.enrichment.name
-  source = "${path.module}/../../../stops.csv"
+  source = "${path.module}/stops.csv"
 }
