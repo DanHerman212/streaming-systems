@@ -29,6 +29,12 @@ resource "google_project_iam_member" "tasks_to_processor_sa_roles" {
   role    = each.value
   member  = "serviceAccount:${google_service_account.tasks_to_processor_sa.email}"
 }
+# Allow tasks-to-processor-sa to act as itself (needed for Cloud Run to use this SA to enqueue tasks)
+resource "google_service_account_iam_member" "tasks_to_processor_sa_act_as" {
+  service_account_id = google_service_account.tasks_to_processor_sa.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${google_service_account.tasks_to_processor_sa.email}"
+}
 
 # Service Account: enqueuer-to-tasks-sa
 resource "google_service_account" "enqueuer_to_tasks_sa" {
