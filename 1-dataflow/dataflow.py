@@ -137,8 +137,8 @@ def run():
         project=PROJECT_ID,
         region=REGION,
         runner='DataflowRunner',
-        temp_location="gs://<your-project-id>-dataflow-temp"
-        staging_location="gs://<your-project-id>-dataflow-staging"
+        temp_location="gs://<your-project-id>-dataflow-temp",
+        staging_location="gs://<your-project-id>-dataflow-staging",
         num_workers=2,
         max_num_workers=5,
         worker_machine_type='n2-highmem-16',
