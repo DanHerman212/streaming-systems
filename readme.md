@@ -41,12 +41,12 @@ Once the data is processed it will be written to BigQuery, available for analysi
 </font>
 
 ## Implementation Steps
-## Most implementation is automated through <img src="7-images/tf.png" alt="drawing" width="50"/><br>
+## Most implementation is automated through Terraform<img src="7-images/tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
 
-# 🚀 Quick Start (Recommended for Beginners)
+# Quick Start 
 
-Deploy the entire pipeline with a single command! Perfect for novice users.
+Deploy the entire pipeline with a single command! 
 
 ## Prerequisites
 - Google Cloud Project with billing enabled
@@ -69,139 +69,20 @@ chmod +x deploy.sh
 ./deploy.sh YOUR_PROJECT_ID us-east1
 ```
 
-**That's it!** ☕ Grab a coffee - deployment takes ~15-20 minutes.
 
-The script automatically:
-- ✅ Enables all required GCP APIs
-- ✅ Creates Artifact Registry
-- ✅ Builds and pushes container images
-- ✅ Deploys infrastructure with Terraform
-- ✅ Configures IAM permissions
-- ✅ Deploys Dataflow pipeline
-- ✅ Activates Cloud Scheduler
-
----
-
-# 📖 Manual Deployment (Advanced Users)
-
-If you prefer step-by-step control, follow these instructions:
-
-## Step 1: Clone the Repository<br>
-```shell
-git clone https://github.com/your-username/streaming-systems.git
-cd streaming-systems
-```
-
-## Step 2: Enable APIs:
-Update the project flag at the end of this command
-```shell
-gcloud services enable cloudresourcemanager.googleapis.com \
-  cloudtasks.googleapis.com \
-  pubsub.googleapis.com \
-  iam.googleapis.com \
-  --project=<your-project-id>
-```
-
-## Step 3: Containerize Applications
-We will have to do 2 things here:<br>
-1) Create an Artifact Registry repository to store the container images<br>
-2) Build and push the container images to the repository<br>
-<br>
-Here is the command to create the repository:<br>
-Make sure to update your region and project id
-
-```shell
-gcloud artifacts repositories create streaming-systems-repo \
-  --repository-format=docker \
-  --location=YOUR_REGION \
-  --project=YOUR_PROJECT_ID
-```
-Now we will execute a script to containerize the code<br>
-Open the file editor and look for the `streaming-systems` folder<br>
-Look in the root directory and open `build_images.sh` <br>
-
-You will first need to update your project id and region in the bash script
-```shell
-# update your project id in the build_images.sh script
-REGION="YOUR_REGION"
-PROJECT="YOUR_PROJECT_ID"
-```
-Return to the terminal and navigate to the `streaming-systems` directory<br>
-```shell
-# return to the streaming-systems root directory
-cd streaming-systems
-# run the script from the root directory
-./build_images.sh
-```
-Once the script completes go back into the file editor<br>
-Go to `4-terraform` folder and update the .tfvars file with the image URIs<br>
-If you use the sample.tfvars file, you can just rename it to `terraform.tfvars` or it won't work<br>
-Now update the project-id<br>
-pro tip: there is a `sample.tfvars` file in the `4-terraform` folder<br>
-
-```shell
-# Replace your-project with your GCP project ID
-project_id = "your-project-id"
-mta_processor_endpoint_image = "us-east1-docker.pkg.dev/your-project-id/streaming-systems-repo/mta-processor"
-event_task_enqueuer_image    = "us-east1-docker.pkg.dev/your-project-id/streaming-systems-repo/event-task-enqueuer"
-```
-After project variables are updated, go back to the terminal<br>
-and proceed to step 4<br>
-
-## Step 4: Deploy Infrastructure <br>
-Now that you've containerized the applications, it's time to deploy the infrastructure with Terraform.<br>
-```shell
-cd 4-terraform
-terraform init
-terraform apply
-```
-
-Wait 90 seconds for IAM propagation:
-```shell
-sleep 90
-```
-
-Add Cloud Tasks service agent permission:
-```shell
-PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format='value(projectNumber)')
-gcloud iam service-accounts add-iam-policy-binding tasks-to-processor-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com \
-  --member="serviceAccount:service-${PROJECT_NUMBER}@gcp-sa-cloudtasks.iam.gserviceaccount.com" \
-  --role="roles/iam.serviceAccountUser"
-```
-
-Once infrastructure is deployed prepare the Dataflow script<br>
-
-## Step 5: Prepare and Launch Dataflow Pipeline<br>
-There are a few places where project ID needs to be updated.<bR>
-I created a bash script that will update all fields for you.<br>
-please execute the command below, replacing `<YOUR_PROJECT_ID>` with your actual GCP project ID and it will update your dataflow script.<bR>
-
-```shell
-cd streaming-systems/1-dataflow
-./replace_project_id.sh <YOUR_PROJECT_ID>
-```
-
-Once the infrastructure is deployed go to step 6<br>
-## Step 6: Deploy Dataflow Job - It takes 3 minutes for Dataflow to get started <br>
-```shell
-cd 1-dataflow
-python dataflow.py
-``` 
-Once Dataflow is deployed go to step 7<br>
-## Step 7:  Turn on `Cloud Scheduler` to activate the trigger and start the event feed as it will be deployed in a paused state.<br>
-
-```shell
-gcloud scheduler jobs resume trigger-event-task-enqueuer --location=YOUR_REGION
-```
-
-Or manually enable via the console:
-![Cloud Scheduler](/7-images/scheduler.png)
-
----
+## **That's it!**<br>
+### Here is what happens next:
+<font size="4">
+1.  It will take between 1 - 2 minutes to deploy the containers.<br>
+2. There are quite a few service accounts and permissions being propogated.<br>
+With that said, you may see some errors from cloud scheduler and in the logs for cloud run.<br>
+Ignore these errors, as the permissions propagate in the background, it will self-correct.<br>
+3. It will take less than 1 minute to deploy the infrastructure.<bR>
+4. The dataflow script takes 3 minutes to warm up.<br> 
 </font>
-<br>
 
-## Dataflow Dashboard
+
+# Dataflow Dashboard
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
 <br>
 
