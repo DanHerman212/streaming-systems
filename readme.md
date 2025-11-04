@@ -94,10 +94,15 @@ It will take 3 minutes for Dataflow to get up and running.  You can check the da
 Data definition can be found at [data dictionary page](data.md)<br>
 
 # SQL Anlaysis and Data Visualization
+As a frequent passenger of the ACE subway line, I answered a few common questions, I was curious about:<br>
+- What is the average time between train arrivals on the ACE line during a weekday?<br>
+- What are the top 10 busiest stations on the ACE line?<br>
+- What is the average idle time per station on the ACE line?<br>
 Queries can be found in the [sql folder](/5-sql) folder.<br>
 
 ## Avg Time Between Trains and Frequency
-The average time waiting for a train and the frequency of trains on the ACE line during a 24 hour weekday period.
+The average time waiting for a train and the frequency of trains on the ACE line during a 24 hour weekday period.<br>  The top 5 stations can be observed in the lower right quadrant.  The next insight will identify those stations.
+
 ![Avg Time Between Train Arrivals](/6-images/avg_time_bet_trains1.png)
 <br>
 
@@ -107,7 +112,9 @@ These are the busiest stations for the ACE line, based on total number of train 
 Fun Fact: [42-St Port Authority Terminal](https://www.mta.info/agency/new-york-city-transit/subway-bus-ridership-2024) (Times Square) has the most riders with 58 million paid passengers in 2024.
 
 # Idle Time Per Station
+
 The map represents all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.
+
 ![Idle Time Per Station](/6-images/idle.png)
 ---
 # Folder Structure
