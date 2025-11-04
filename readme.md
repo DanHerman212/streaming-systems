@@ -98,7 +98,7 @@ Data definition can be found at [data dictionary page](data.md)<br>
 As a frequent passenger of the ACE subway line, I answered a few common questions I was curious about:<br>
 - What is the average time between train arrivals on the ACE line during a weekday?<br>
 - What are the top 10 busiest stations on the ACE line?<br>
-- What is the average idle time per station on the ACE line?<br>
+- What is the average idle time per station on the ACE line?<br><br>
 Queries can be found in the [sql folder](/5-sql) folder.<br>
 
 ## Avg Time Between Trains and Frequency
