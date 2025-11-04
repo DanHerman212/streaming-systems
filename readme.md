@@ -1,22 +1,19 @@
 # Stream Processing Systems
-<br>
+<br><font size="5">
 Production grade data pipelines capable of processing event streams in real time or near real time.
 <br><br>
 
-This implementation is connected to the [MTA real-time data feed](https://api.mta.info/#/subwayRealTimeFeeds) for the New York City subway system.  There are 8 separate feeds available, where this project is connected to the ACE subway line, which can be observed on the [subway diagram](https://www.mta.info/map/5256).<br>  <br>The subway system is the largest in the world, with approximately 3.5 million daily riders, accessing subways through 470 stations, operating 24/7.  The ACE line includes roughly 30 stations and produces 1,200 unique daily trips on a weekday or 750 unique daily trips on weekends.<br>
+This implementation is connected to the [MTA real-time data feed](https://api.mta.info/#/subwayRealTimeFeeds) for the New York City subway system.  There are 8 separate feeds available, where this project is connected to a single feed, which is the ACE subway line, which can be observed on the [subway diagram](https://www.mta.info/map/5256).<br>  <br>The subway system is the largest in the world, with approximately 3.5 million daily riders, accessing subways through 470 stations, operating 24/7.  The ACE line will travel through approximately 100 of these stations and produce 1,200 unique daily trips on a weekday or 750 unique daily trips on weekends.<br>
 
 The MTA claims the feed is updated with each subway vehicle timestamp every 30 seconds.  However, we found the updates are produced from 5 - 25 seconds.
 We are polling the subway feed every 20 seconds, processing 3 messages per minute.  The feed produces nearly 1.25gb of data every 24 hrs with roughly, 250,000 updates per 24 hrs on a weekday and about 130,000 updates on a weekend.
 <br>
 
 # Video Tutorial
-This Tutorial will provide a comprehensive walk through on the project implementation and architecture.<br>
-
-![Video Title](https://www.youtube.com/watch?v=VIDEO_ID)<br>
-
+I will launch a video tutorial sometime soon to walk through the project.
 
 ![Architecture Diagram](/6-images/architecture2.png) <br>
-<br><font size="4">
+<br>
 The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
 There are two applications built with Flask that will be containerized to poll the MTA endpoint, executed through Cloud Run.  The first application is the event processor, which fetches messages and publishes to pubsub.  The next application is a task queue, which will setup 3 tasks to poll the event processor.  The first task will get fired off immediately, the second task will be scheduled on a 20 second delay and the third on a 40 second delay.  The task queue will be triggered every minute by Cloud Scheduler.  
@@ -39,13 +36,13 @@ Dataflow consumes messages, applies transformations and writes to a 'data sink'.
 - BigQuery: Data Warehouse<br>
 Once the data is processed it will be written to BigQuery, available for analysis between 7 - 35 seconds after the data is generated.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.
 </font>
+<br>
 
-## Implementation Steps
-## Most implementation is automated through Terraform<img src="6-images/tf.png" alt="drawing" width="50"/><br>
-<br><font size="4">
+<font size="5">
+# Implementation Steps
+Most implementation is automated through Terraform<img src="6-images/tf.png" alt="drawing" width="50"/>
 
 # Quick Start 
-
 Deploy the entire pipeline with a single command! 
 
 ## Prerequisites
@@ -68,11 +65,11 @@ cd streaming-systems
 chmod +x deploy.sh
 ./deploy.sh YOUR_PROJECT_ID us-east1
 ```
-
+</font>
 
 ## **That's it!**<br>
 ### Here is what happens next:
-<font size="4">
+<font size="5">
 1.  It will take between 1 - 2 minutes to deploy the containers and about 1 minute to deploy all the infrastructure.<br>
 <bR>
 2. There are quite a few service accounts and permissions being propogated, with that said, you may see some errors from cloud scheduler and in the logs for cloud run. It can take between 20 - 30 minutes to propagate permissions.
@@ -81,7 +78,7 @@ Ignore these errors, as the permissions propagate in the background, it will sel
 3. The dataflow script takes 3 minutes to warm up.<br>
 <br> 
 4. It will take dataflow about 35 - 40 minutes to catch up to the data feed, where you should see an improvement in performance metrics on the dataflow dashboard.<br>
-</font>
+
 
 
 # Dataflow Dashboard
@@ -163,3 +160,4 @@ The map represents all stations and average idle time per station.  Most station
 ├── deploy.sh # one-command deployment script
 └── readme.md # this file
 ``` 
+</font>
