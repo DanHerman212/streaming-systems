@@ -149,35 +149,52 @@ print_success "Terraform variables configured"
 echo ""
 
 # ============================================
-# STEP 5: Deploy Infrastructure with Terraform
+# STEP 5: Prepare Dataflow Script
 # ============================================
-print_step "Step 5/6: Deploying Infrastructure with Terraform"
+print_step "Step 5/6: Preparing Dataflow Pipeline"
 
+cd ../1-dataflow
+
+# Update project ID in dataflow script
+./replace_project_id.sh $PROJECT_ID
+print_success "Dataflow script prepared"
+echo ""
+
+cd ../4-terraform
+
+# ============================================
+# STEP 6: Deploy Infrastructure and Dataflow in Parallel
+# ============================================
+print_step "Step 6/6: Deploying Infrastructure and Dataflow Pipeline"
+
+print_info "Deploying Terraform infrastructure..."
 terraform init
 terraform apply -auto-approve
 
 print_success "Infrastructure deployed"
-print_info "Waiting 90 seconds for IAM permissions to propagate..."
-sleep 90
-print_success "IAM propagation complete"
 echo ""
 
-cd ..
+# Launch Dataflow immediately
+print_info "Launching Dataflow job in background..."
+cd ../1-dataflow
+python dataflow.py &
+DATAFLOW_PID=$!
 
-# ============================================
-# STEP 6: Deploy Dataflow Pipeline
-# ============================================
-print_step "Step 6/6: Deploying Dataflow Pipeline"
+print_info "Dataflow deployment started in background (PID: $DATAFLOW_PID)"
 
-cd 1-dataflow
+# Wait for Dataflow to finish
+print_info "Waiting for Dataflow deployment to complete..."
+wait $DATAFLOW_PID
+DATAFLOW_EXIT_CODE=$?
 
-# Update project ID in dataflow script
-./replace_project_id.sh $PROJECT_ID
+if [ $DATAFLOW_EXIT_CODE -eq 0 ]; then
+    print_success "Dataflow pipeline deployed successfully"
+else
+    print_error "Dataflow deployment failed with exit code $DATAFLOW_EXIT_CODE"
+    print_info "You may need to run the Dataflow deployment manually:"
+    print_info "  cd 1-dataflow && python dataflow.py"
+fi
 
-print_info "Launching Dataflow job (this takes 3-5 minutes)..."
-python dataflow.py
-
-print_success "Dataflow pipeline deployed"
 echo ""
 
 cd ..
