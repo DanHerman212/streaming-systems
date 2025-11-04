@@ -71,15 +71,10 @@ chmod +x deploy.sh
 ## **That's it!**<br>
 ### Here is what happens next:
 <font size="5">
-1.  It will take between 1 - 2 minutes to deploy the containers and about 1 minute to deploy all the infrastructure.<br>
-<bR>
-2. There are quite a few service accounts and permissions being propogated, with that said, you may see some errors from cloud scheduler and in the logs for cloud run. It can take between 20 - 30 minutes to propagate permissions.
-Ignore these errors, as the permissions propagate in the background, it will self-correct.<br>
+The deployment should take 5 minutes or so to deploy everything.<br>
 <br>
-3. The dataflow script takes 3 minutes to warm up.<br>
-<br> 
-4. It will take dataflow about 35 - 40 minutes to catch up to the data feed, where you should see an improvement in performance metrics on the dataflow dashboard.<br>
-
+The last part of the deployment is the dataflow pipeline.  Once dataflow is deployed, you will see 4 warning messages. That means the deployment is successful and the datastream is running.  You can leave the terminal and go to the dataflow dashboard in the GCP console for better visibility.
+<br>
 
 # Dataflow Dashboard
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
@@ -105,7 +100,7 @@ Make sure to update your project-id in the queries before executing.
 ## Avg Time Between Trains and Frequency
 The range of time waiting for a train can be less than 2 minutes to over 16 minutes.  There is a clear correlation between busy stations and wait times.  Busier stations are served with <2 minute wait times.  <br>  The top 5 stations can be observed in the lower right quadrant.  The next insight will identify those stations.
 
-![Avg Time Between Train Arrivals](/6-images/avg_time_bet_trains1.png)
+![Avg Time Between Train Arrivals](/6-images/avg-time-bet-trains.png)
 <br>
 
 # Top 10 Busiest Stations
