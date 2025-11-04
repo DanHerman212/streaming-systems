@@ -28,7 +28,7 @@ This is a workaround, since I was having trouble finding ways to poll the MTA en
 Creates event triggers on a schedule.  There is a constraint where the lowest time interval available is 1 minute.  You cannot schedule sub 1 minute triggers.  Therefore, we setup the workaround with Cloud Tasks, where we receive a trigger every minute and distribute 3 tasks in 20 second intervals, providing more granular control.<br>
 
 - Pub/Sub: Message Broker<br>
-Messages are fetched from the MTA and published to a pubsub topic.  There is a pubsub pull subscription setup with the consumer, which is Dataflow, the data processing engine.<br>
+Enterprise messaging bus provided by Google. The infrastructure processes 100 million messages per second.  Messages are fetched from the MTA and published to a pubsub topic.  There is a pubsub pull subscription setup with the consumer, which is Dataflow, the data processing engine.<br>
 
 - Dataflow: Data Processing Engine<br>
 Dataflow consumes messages, applies transformations and writes to a relational database.  For this implementation there are 4 primary transforms, where we will first 1) Flatten 2) Filter 3) Enrich and 4) Apply windowing to our datset before we write to BigQuery.  The messages come in json and need to be flattened.  Most information in the feed is not required, so we will filter out 97% of the information.  After filtering, we will enrich with station information that is provided through a static csv file.  After enrichment, we will apply windowing to handle late arriving data and ensure data consistency.<br>
