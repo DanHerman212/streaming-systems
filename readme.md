@@ -1,4 +1,4 @@
-# Stream Processing Systems
+# Streaming Data Pipelines
 <br><font size="5">
 Production grade data pipelines capable of processing event streams in real time or near real time.
 <br><br>
