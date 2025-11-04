@@ -100,6 +100,7 @@ As a frequent passenger of the ACE subway line, I answered a few common question
 - What are the top 10 busiest stations on the ACE line?<br>
 - What is the average idle time per station on the ACE line?<br><br>
 Queries can be found in the [sql folder](/5-sql) folder.<br>
+Make sure to update your project-id in the queries before executing.
 
 ## Avg Time Between Trains and Frequency
 The range of time waiting for a train can be less than 2 minutes to over 16 minutes.  There is a clear correlation between busy stations and wait times.  Busier stations are served with <2 minute wait times.  <br>  The top 5 stations can be observed in the lower right quadrant.  The next insight will identify those stations.

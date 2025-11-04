@@ -6,7 +6,7 @@ WITH
       trip_id,
       MIN(vehicle_timestamp) AS trip_arrival_time
     FROM
-      `streaming-systems-245`.mta_updates.realtime_updates
+      `<Your-project-ID>`.mta_updates.realtime_updates
     WHERE
       vehicle_timestamp IS NOT NULL AND stop_name IS NOT NULL
     GROUP BY stop_name, DATE(vehicle_timestamp, 'America/New_York'), trip_id

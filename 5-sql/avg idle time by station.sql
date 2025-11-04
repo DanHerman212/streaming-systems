@@ -19,7 +19,7 @@ WITH
             ORDER BY vehicle_timestamp), SECOND)
       END AS seconds_since_last
     FROM
-      `streaming-systems-245`.mta_updates.realtime_updates
+      `<Your-project-ID`.mta_updates.realtime_updates
     WHERE
       direction = "Southbound" AND stop_name IS NOT NULL
   )
