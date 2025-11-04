@@ -18,11 +18,11 @@ The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
 There are two applications built with Flask that will be containerized to poll the MTA endpoint, executed through Cloud Run.  The first application is the event processor, which fetches messages and publishes to pubsub.  The next application is a task queue, which will setup 3 tasks to poll the event processor.  The first task will get fired off immediately, the second task will be scheduled on a 20 second delay and the third on a 40 second delay.  The task queue will be triggered every minute by Cloud Scheduler.  
 
-- Cloud Run: Serverless Application Execution<bR>
-The event processor and task queue will be deployed for execution on Cloud Run<br>
+- Cloud Run: Serverless Application Execution<br>
+The event processor and task queue will be deployed for serverless execution on Cloud Run<br>
 
 - Cloud Tasks: Queue Management<br>
-This is a workaround, since Cloud Run does not allow you to run a continuous loop in a container.  The container will time out after 12 minutes.  Cloud tasks allows us to distribute triggers asyncronously for granular controls of long running tasks.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.<br>
+This is a workaround, since I was having trouble finding ways to poll the MTA endpoint continuously.  Cloud Run does not allow you to run a continuous loop in a container.  The container will time out after 12 minutes.  Cloud tasks allows us to distribute triggers asyncronously for granular controls of long running tasks.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.<br>
 
 - Cloud Scheduler: Cron Jobs (Event Triggers)<br>
 Creates event triggers on a schedule.  There is a constraint where the lowest time interval available is 1 minute.  You cannot schedule sub 1 minute triggers.  Therefore, we setup the workaround with Cloud Tasks, where we receive a trigger every minute and distribute 3 tasks in 20 second intervals, providing more granular control.<br>
@@ -30,8 +30,8 @@ Creates event triggers on a schedule.  There is a constraint where the lowest ti
 - Pub/Sub: Message Broker<br>
 Messages are fetched from the MTA and published to a pubsub topic.  There is a pubsub pull subscription setup with the consumer, which is Dataflow, the data processing engine.<br>
 
-- Dataflow: Stream Processing Engine<br>
-Dataflow consumes messages, applies transformations and writes to a relational database.  For this implementation there are 4 primary transforms, where we will first 1) Flatten 2) Filter 3) Enrich and 4) Windowing.  The messages come in json and need to be flattened.  Most information in the feed is not required, so we will filter out 97% of the information.  After filtering, we will enrich with station information that is provided through a static csv file.  After enrichment, we will apply windowing to handle late arriving data and ensure data consistency.<br>
+- Dataflow: Data Processing Engine<br>
+Dataflow consumes messages, applies transformations and writes to a relational database.  For this implementation there are 4 primary transforms, where we will first 1) Flatten 2) Filter 3) Enrich and 4) Apply windowing to our datset before we write to BigQuery.  The messages come in json and need to be flattened.  Most information in the feed is not required, so we will filter out 97% of the information.  After filtering, we will enrich with station information that is provided through a static csv file.  After enrichment, we will apply windowing to handle late arriving data and ensure data consistency.<br>
 
 - BigQuery: Data Warehouse<br>
 Once the data is processed it will be written to BigQuery, available for analysis between 7 - 35 seconds after the data is generated.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.
@@ -39,6 +39,7 @@ Once the data is processed it will be written to BigQuery, available for analysi
 <br>
 
 <font size="5">
+
 # Implementation Steps
 Most implementation is automated through Terraform<img src="6-images/tf.png" alt="drawing" width="50"/>
 
