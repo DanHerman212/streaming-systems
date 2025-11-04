@@ -73,12 +73,11 @@ chmod +x deploy.sh
 ## **That's it!**<br>
 ### Here is what happens next:
 <font size="4">
-1.  It will take between 1 - 2 minutes to deploy the containers.<br>
+1.  It will take between 1 - 2 minutes to deploy the containers and about 1 minute to deploy all the infrastructure.<br>
 2. There are quite a few service accounts and permissions being propogated.<br>
-With that said, you may see some errors from cloud scheduler and in the logs for cloud run.<br>
+With that said, you may see some errors from cloud scheduler and in the logs for cloud run. It can take between 20 - 30 minutes to propagate permissions.<br>
 Ignore these errors, as the permissions propagate in the background, it will self-correct.<br>
-3. It will take less than 1 minute to deploy the infrastructure.<bR>
-4. The dataflow script takes 3 minutes to warm up.<br> 
+3. The dataflow script takes 3 minutes to warm up.<br> 
 </font>
 
 
