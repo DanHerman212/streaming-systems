@@ -15,7 +15,7 @@ This Tutorial will provide a comprehensive walk through on the project implement
 ![Video Title](https://www.youtube.com/watch?v=VIDEO_ID)<br>
 
 
-![Architecture Diagram](/7-images/architecture2.png) <br>
+![Architecture Diagram](/6-images/architecture2.png) <br>
 <br><font size="4">
 The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
@@ -41,7 +41,7 @@ Once the data is processed it will be written to BigQuery, available for analysi
 </font>
 
 ## Implementation Steps
-## Most implementation is automated through Terraform<img src="7-images/tf.png" alt="drawing" width="50"/><br>
+## Most implementation is automated through Terraform<img src="6-images/tf.png" alt="drawing" width="50"/><br>
 <br><font size="4">
 
 # Quick Start 
@@ -88,7 +88,7 @@ Ignore these errors, as the permissions propagate in the background, it will sel
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
 <br>
 
-![Dataflow Dashboard](/7-images/dataflow.png)
+![Dataflow Dashboard](/6-images/dataflow.png)
 
 # Data Dictionary
 Data definition can be found at [data dictionary page](data.md)<br>
@@ -98,17 +98,17 @@ Queries can be found in the [sql folder](/5-sql) folder.<br>
 
 ## Avg Time Between Trains and Frequency
 The average time waiting for a train and the frequency of trains on the ACE line during a 24 hour weekday period.
-![Avg Time Between Train Arrivals](/7-images/avg_time_bet_trains1.png)
+![Avg Time Between Train Arrivals](/6-images/avg_time_bet_trains1.png)
 <br>
 
 # Top 10 Busiest Stations
 These are the busiest stations for the ACE line, based on total number of train arrivals in a 24 hour weekday period.
-![Top 10 Busiest Stations](/7-images/barplot.png)
+![Top 10 Busiest Stations](/6-images/barplot.png)
 Fun Fact: [42-St Port Authority Terminal](https://www.mta.info/agency/new-york-city-transit/subway-bus-ridership-2024) (Times Square) has the most riders with 58 million paid passengers in 2024.
 
 # Idle Time Per Station
 The map represents all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.
-![Idle Time Per Station](/7-images/idle.png)
+![Idle Time Per Station](/6-images/idle.png)
 ---
 # Folder Structure
 ```
