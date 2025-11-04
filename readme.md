@@ -86,7 +86,7 @@ It will take 3 minutes for Dataflow to get up and running.  You can check the da
 <br>
 
 ![Dataflow Dashboard](/6-images/dataflow.png)
-<bR>
+<bR><br>
 You can click the three small dots and expand the dashboard for better visibility.
 
 ![Dataflow Dashboard Expanded](/6-images/1206.png)
@@ -95,7 +95,7 @@ You can click the three small dots and expand the dashboard for better visibilit
 Data definition can be found at [data dictionary page](data.md)<br>
 
 # SQL Anlaysis and Data Visualization
-As a frequent passenger of the ACE subway line, I answered a few common questions, I was curious about:<br>
+As a frequent passenger of the ACE subway line, I answered a few common questions I was curious about:<br>
 - What is the average time between train arrivals on the ACE line during a weekday?<br>
 - What are the top 10 busiest stations on the ACE line?<br>
 - What is the average idle time per station on the ACE line?<br>
