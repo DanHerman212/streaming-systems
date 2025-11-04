@@ -25,7 +25,7 @@ The event processor and task queue will be deployed for execution on Cloud Run<b
 This is a workaround, since Cloud Run does not allow you to run a continuous loop in a container.  The container will time out after 12 minutes.  Cloud tasks allows us to distribute triggers asyncronously for granular controls of long running tasks.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.<br>
 
 - Cloud Scheduler: Cron Jobs (Event Triggers)<br>
-Creates event triggers on a schedule.  There is a constraint where the lowest time interval available is 1 minute.  You cannot schedule sub 1 minute triggers.  Therefore, we setup the workaround with Cloud Tasks to distribute 3 triggers every minute on a 20 second interval.<br>
+Creates event triggers on a schedule.  There is a constraint where the lowest time interval available is 1 minute.  You cannot schedule sub 1 minute triggers.  Therefore, we setup the workaround with Cloud Tasks, where we receive a trigger every minute and distribute 3 tasks in 20 second intervals, providing more granular control.<br>
 
 - Pub/Sub: Message Broker<br>
 Messages are fetched from the MTA and published to a pubsub topic.  There is a pubsub pull subscription setup with the consumer, which is Dataflow, the data processing engine.<br>
