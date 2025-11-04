@@ -102,7 +102,7 @@ As a frequent passenger of the ACE subway line, I answered a few common question
 Queries can be found in the [sql folder](/5-sql) folder.<br>
 
 ## Avg Time Between Trains and Frequency
-The average time waiting for a train and the frequency of trains on the ACE line during a 24 hour weekday period.<br>  The top 5 stations can be observed in the lower right quadrant.  The next insight will identify those stations.
+The range of time waiting for a train can be less than 2 minutes to over 16 minutes.  There is a clear correlation between busy stations and wait times.  Busier stations are served with <2 minute wait times.  <br>  The top 5 stations can be observed in the lower right quadrant.  The next insight will identify those stations.
 
 ![Avg Time Between Train Arrivals](/6-images/avg_time_bet_trains1.png)
 <br>
