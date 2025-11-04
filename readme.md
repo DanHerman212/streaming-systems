@@ -74,10 +74,13 @@ chmod +x deploy.sh
 ### Here is what happens next:
 <font size="4">
 1.  It will take between 1 - 2 minutes to deploy the containers and about 1 minute to deploy all the infrastructure.<br>
-2. There are quite a few service accounts and permissions being propogated.<br>
-With that said, you may see some errors from cloud scheduler and in the logs for cloud run. It can take between 20 - 30 minutes to propagate permissions.<br>
+<bR>
+2. There are quite a few service accounts and permissions being propogated, with that said, you may see some errors from cloud scheduler and in the logs for cloud run. It can take between 20 - 30 minutes to propagate permissions.
 Ignore these errors, as the permissions propagate in the background, it will self-correct.<br>
-3. The dataflow script takes 3 minutes to warm up.<br> 
+<br>
+3. The dataflow script takes 3 minutes to warm up.<br>
+<br> 
+4. It will take dataflow about 35 - 40 minutes to catch up to the data feed, where you should see an improvement in performance metrics on the dataflow dashboard.<br>
 </font>
 
 
@@ -109,19 +112,18 @@ The map represents all stations and average idle time per station.  Most station
 ---
 # Folder Structure
 ```
-├── dataflow # script for dataflow pipeline
+├── 1-dataflow # dataflow pipeline script and utilities
 │   ├── dataflow.py
-│   ├── service_account.sh
-│   └── write_to_bq.sh
-├── event-processor # collects messages and sends them to pubsub from data feed
+│   └── replace_project_id.sh
+├── 2-event-processor # event processor application that fetches messages
 │   ├── Dockerfile
 │   ├── app.py
 │   └── requirements.txt
-├── task-queue # distributes triggers to the event processor asynchronously every 20 seconds
+├── 3-task-queue # task queue polls the event processor every 20 seconds
 │   ├── Dockerfile
 │   ├── main.py
 │   └── requirements.txt
-├── terraform # infrastructure as code using terraform
+├── 4-terraform # terraform infrastructure as code - automates deployment in 1 minute
 │   ├── main.tf
 │   ├── modules
 │   │   ├── apis
@@ -132,20 +134,25 @@ The map represents all stations and average idle time per station.  Most station
 │   │   ├── service_accounts
 │   │   └── storage
 │   ├── outputs.tf
-│   ├── terraform.tfvars
+│   ├── sample.tfvars
+│   ├── schema.json
 │   └── variables.tf
-├── utils # utilities to build container images
-│   ├── build_containers.sh
-└── z_images # images for presentation
-    ├── 0.5 Architecture.png
-    ├── architecture2.png
-    ├── dataflow.png
-    ├── image.png
-    ├── scheduler.png
-    ├── shell.png
-    └── tf.png
-├── readme.md
-├── schema.json # BigQuery table schema for pipeline
-├── stops.csv # station names for MTA used to enrich dataset in pipeline
-```
-</font>
+├── 5-sql # a few sample SQL queries to experiment with
+│   ├── avg idle time by station.sql
+│   └── avg wait time and total trips per station.sql
+├── 6-images # just images for presentation
+│   ├── 0.5 Architecture.png
+│   ├── architecture2.png
+│   ├── avg_time_bet_trains1.png
+│   ├── barplot.png
+│   ├── dataflow.png
+│   ├── idle.png
+│   ├── image.png
+│   ├── scheduler.png
+│   ├── shell.png
+│   └── tf.png
+├── build_images.sh # script to automate container builds
+├── data.md # data dictionary
+├── deploy.sh # one-command deployment script
+└── readme.md # this file
+``` 
