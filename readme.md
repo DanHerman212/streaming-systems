@@ -31,7 +31,7 @@ Creates event triggers on a schedule.  There is a constraint where the lowest ti
 Messages are fetched from the MTA and published to a pubsub topic.  There is a pubsub pull subscription setup with the consumer, which is Dataflow, the data processing engine.<br>
 
 - Dataflow: Stream Processing Engine<br>
-Dataflow consumes messages, applies transformations and writes to a 'data sink'.  For this implementation there are 3 primary transforms, where we will first 1) Flatten 2) Filter and 3) Enrich.  The messages come in json and need to be flattened.  Then we will filter erroneous messages that are not relevant, finally we will enrich with the stops data including stop name and GIS data (lat lon) for interpretability and data visualization.
+Dataflow consumes messages, applies transformations and writes to a relational database.  For this implementation there are 4 primary transforms, where we will first 1) Flatten 2) Filter 3) Enrich and 4) Windowing.  The messages come in json and need to be flattened.  Most information in the feed is not required, so we will filter out 97% of the information.  After filtering, we will enrich with station information that is provided through a static csv file.  After enrichment, we will apply windowing to handle late arriving data and ensure data consistency.<br>
 
 - BigQuery: Data Warehouse<br>
 Once the data is processed it will be written to BigQuery, available for analysis between 7 - 35 seconds after the data is generated.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.
@@ -80,12 +80,15 @@ Ignore these errors, as the permissions propagate in the background, it will sel
 4. It will take dataflow about 35 - 40 minutes to catch up to the data feed, where you should see an improvement in performance metrics on the dataflow dashboard.<br>
 
 
-
 # Dataflow Dashboard
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
 <br>
 
 ![Dataflow Dashboard](/6-images/dataflow.png)
+<bR>
+You can click the three small dots and expand the dashboard for better visibility.
+
+![Dataflow Dashboard Expanded](/6-images/1206.png)
 
 # Data Dictionary
 Data definition can be found at [data dictionary page](data.md)<br>
