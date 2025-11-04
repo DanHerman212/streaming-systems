@@ -1,3 +1,8 @@
+# Data source to get project number for service agent permissions
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
 # Service Account: compute-engine-sa
 resource "google_service_account" "compute_engine_sa" {
   account_id   = "compute-engine-sa"
@@ -35,6 +40,13 @@ resource "google_service_account_iam_member" "tasks_to_processor_sa_act_as" {
   service_account_id = google_service_account.tasks_to_processor_sa.name
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.tasks_to_processor_sa.email}"
+}
+
+# Allow Cloud Tasks service agent to use tasks-to-processor-sa for OIDC token generation
+resource "google_service_account_iam_member" "cloudtasks_sa_can_act_as_tasks_sa" {
+  service_account_id = google_service_account.tasks_to_processor_sa.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloudtasks.iam.gserviceaccount.com"
 }
 
 # Service Account: enqueuer-to-tasks-sa
