@@ -165,7 +165,7 @@ echo ""
 cd ..
 
 # ============================================
-# STEP 6: Prepare and Deploy Dataflow
+# STEP 6: Deploy Dataflow Pipeline
 # ============================================
 print_step "Step 6/6: Deploying Dataflow Pipeline"
 

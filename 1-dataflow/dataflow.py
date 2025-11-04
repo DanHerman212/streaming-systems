@@ -9,7 +9,7 @@ PROJECT_ID = "<your-project-id>"
 BIGQUERY_DATASET = "mta_updates"
 BIGQUERY_TABLE = "<your-project-id>.mta_updates.realtime_updates"
 PUBSUB_SUBSCRIPTION = "mta-gtfs-ace-sub"
-GCS_STOPS_CSV_PATH = "gs://<your-project-id>-enrichment"
+GCS_STOPS_CSV_PATH = "gs://<your-project-id>-enrichment/stops.csv"
 FEED_TZ = pytz.timezone('America/New_York')
 REGION = "us-east1" #update your region
 
