@@ -23,7 +23,8 @@ resource "google_project_iam_member" "tasks_to_processor_sa_roles" {
   for_each = toset([
     "roles/run.admin",
     "roles/cloudtasks.admin",
-    "roles/run.invoker"
+    "roles/run.invoker",
+    "roles/pubsub.publisher"  # ADDED: Permission to publish to Pub/Sub
   ])
   project = var.project_id
   role    = each.value
