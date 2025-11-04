@@ -79,3 +79,10 @@ resource "google_project_iam_member" "scheduler_to_enqueuer_sa_roles" {
   role    = each.value
   member  = "serviceAccount:${google_service_account.scheduler_to_enqueuer_sa.email}"
 }
+
+# Allow Cloud Scheduler service agent to use scheduler-to-enqueuer-sa for OIDC token generation
+resource "google_service_account_iam_member" "cloudscheduler_sa_can_act_as_scheduler_sa" {
+  service_account_id = google_service_account.scheduler_to_enqueuer_sa.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+}
