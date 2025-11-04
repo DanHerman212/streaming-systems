@@ -64,7 +64,8 @@ def fetch_and_publish_subway_data():
         data_bytes_with_id = json.dumps(parsed_json_dict).encode('utf-8')
 
         #5 publish to pub/sub with ordering_key
-        topic_path = publisher.topic_path(PROJECT_ID, PUBSUB_TOPIC_ID)
+        # PUBSUB_TOPIC_ID is already the full path: projects/PROJECT_ID/topics/TOPIC_NAME
+        topic_path = PUBSUB_TOPIC_ID
         future = publisher.publish(
             topic_path,
             data=data_bytes_with_id
@@ -74,7 +75,7 @@ def fetch_and_publish_subway_data():
 
         logging.info(f"Successfully fetched, parsed, and published data to {topic_path}. Message ID: {message_id}")
         # --- EXPLICIT SUCCESS RESPONSE ---
-        return f"Succesfully fetched, parsed and publised data to {topic_path}. Message ID: {message_id}", 200
+        return f"Successfully fetched, parsed and published data to {topic_path}. Message ID: {message_id}", 200
 
     except requests.exceptions.RequestException as e:
         logging.exception("HTTP request to NYC subway API failed")
