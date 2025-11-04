@@ -9,6 +9,7 @@ resource "google_cloud_scheduler_job" "trigger_event_task_enqueuer" {
     uri         = var.service_url
     oidc_token {
       service_account_email = var.service_account_email
+      audience              = var.service_url  # CRITICAL: Must match the target service URL
     }
   }
 }
