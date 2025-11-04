@@ -60,6 +60,43 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # ============================================
+# Pre-flight Check: Validate Permissions
+# ============================================
+print_step "Pre-flight: Checking Permissions"
+
+CURRENT_USER=$(gcloud config get-value account)
+print_info "Authenticated as: $CURRENT_USER"
+
+# Test Cloud Build permissions
+print_info "Checking Cloud Build permissions..."
+if gcloud projects get-iam-policy $PROJECT_ID --flatten="bindings[].members" --format="value(bindings.members)" | grep -q "user:$CURRENT_USER"; then
+    print_success "IAM binding found for user"
+else
+    print_error "No IAM binding found. You may need additional permissions."
+fi
+
+# Try to check if we can use Cloud Build (will fail gracefully if not)
+if ! gcloud builds list --project=$PROJECT_ID --limit=1 &>/dev/null; then
+    print_error "Unable to access Cloud Build"
+    print_error "You need the 'Cloud Build Editor' role to deploy this project"
+    echo ""
+    print_info "Ask a project admin to run:"
+    echo "  gcloud projects add-iam-policy-binding $PROJECT_ID \\"
+    echo "    --member='user:$CURRENT_USER' \\"
+    echo "    --role='roles/cloudbuild.builds.editor'"
+    echo ""
+    read -p "Do you want to continue anyway? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        print_error "Deployment cancelled"
+        exit 1
+    fi
+fi
+
+print_success "Permission check complete"
+echo ""
+
+# ============================================
 # STEP 1: Enable Required APIs
 # ============================================
 print_step "Step 1/6: Enabling Required GCP APIs"
