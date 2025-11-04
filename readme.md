@@ -115,7 +115,7 @@ Fun Fact: [42-St Port Authority Terminal](https://www.mta.info/agency/new-york-c
 
 # Idle Time Per Station
 
-The map represents all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.
+The map represents the geographic footprint of all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.
 
 ![Idle Time Per Station](/6-images/idle.png)
 ---
