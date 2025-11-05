@@ -74,7 +74,8 @@ chmod +x deploy.sh
 1.  Build a container registry, containerize the applications and push to Artifact Registry<br><br>
 2.  Setup infrastructure with Terraform (Cloud Run, Cloud Tasks, Pub/Sub, Cloud Scheduler, Service Accounts, Storage Bucket, Dataset and Table Schema)<br><br>
 3.  Deploy the Dataflow pipeline<br><br>
-4.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
+4.  Once all service are deployed, you'll receive a message with links on where to check status of deployment.<br><br>
+5.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
 <br>
 
 # Dataflow Dashboard
