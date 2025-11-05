@@ -71,10 +71,9 @@ chmod +x deploy.sh
 ## **That's it!**<br>
 ### Here is what happens once you run the script:
 <font size="5">
-1.  Build a container registry, containerize the applications and push to Artifact Registry<br>
-2.  Setup infrastructure with Terraform (Cloud Run, Cloud Tasks, Pub/Sub, Cloud Scheduler, Service Accounts, Storage Bucket, Dataset and Table Schema)<br>
-3.  Deploy the Dataflow pipeline<br>
-<br>
+1.  Build a container registry, containerize the applications and push to Artifact Registry<br><br>
+2.  Setup infrastructure with Terraform (Cloud Run, Cloud Tasks, Pub/Sub, Cloud Scheduler, Service Accounts, Storage Bucket, Dataset and Table Schema)<br><br>
+3.  Deploy the Dataflow pipeline<br><br>
 4.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
 <br>
 
