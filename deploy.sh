@@ -211,50 +211,36 @@ terraform apply -auto-approve
 print_success "Infrastructure deployed"
 echo ""
 
-# Launch Dataflow immediately
-print_info "Launching Dataflow job in background..."
+# Launch Dataflow job (non-blocking)
+print_info "Launching Dataflow pipeline..."
 cd ../1-dataflow
-python dataflow.py &
+nohup python dataflow.py > dataflow_launch.log 2>&1 &
 DATAFLOW_PID=$!
-
-print_info "Dataflow deployment started in background (PID: $DATAFLOW_PID)"
-
-# Wait for Dataflow to finish
-print_info "Waiting for Dataflow deployment to complete..."
-wait $DATAFLOW_PID
-DATAFLOW_EXIT_CODE=$?
-
-if [ $DATAFLOW_EXIT_CODE -eq 0 ]; then
-    print_success "Dataflow pipeline deployed successfully"
-else
-    print_error "Dataflow deployment failed with exit code $DATAFLOW_EXIT_CODE"
-    print_info "You may need to run the Dataflow deployment manually:"
-    print_info "  cd 1-dataflow && python dataflow.py"
-fi
-
-echo ""
 
 cd ..
 
 # ============================================
-# Deployment Complete
+# Deployment Launched
 # ============================================
 echo ""
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}🎉 Deployment Complete!${NC}"
+echo -e "${GREEN}🚀 Deployment Launched!${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-print_info "Your MTA streaming pipeline is now active!"
+print_info "Your MTA streaming pipeline deployment is in progress!"
+print_info "Dataflow pipeline is launching in the background (PID: $DATAFLOW_PID)"
 echo ""
-echo "📊 Monitor your deployment:"
-echo "  • Dataflow Dashboard: https://console.cloud.google.com/dataflow/jobs?project=$PROJECT_ID"
+echo -e "${YELLOW}⏱️  Important: Deployment takes 5-10 minutes to fully complete${NC}"
+echo ""
+echo "📊 Please check implementation status on the Google Cloud Console:"
+echo ""
+echo "  • Dataflow Jobs: https://console.cloud.google.com/dataflow/jobs?project=$PROJECT_ID"
 echo "  • Cloud Run Services: https://console.cloud.google.com/run?project=$PROJECT_ID"
 echo "  • BigQuery Dataset: https://console.cloud.google.com/bigquery?project=$PROJECT_ID"
 echo "  • Cloud Scheduler: https://console.cloud.google.com/cloudscheduler?project=$PROJECT_ID"
 echo ""
-echo "🔍 Check logs:"
-echo "  gcloud logging read 'resource.type=cloud_run_revision' --limit=20 --project=$PROJECT_ID"
+echo "🔍 Monitor Dataflow launch logs:"
+echo "  tail -f 1-dataflow/dataflow_launch.log"
 echo ""
-echo "⏱️  Note: It takes 3-5 minutes for Dataflow to fully initialize"
-echo "📈 Data should start flowing into BigQuery within 5-10 minutes"
+echo "📈 Once Dataflow shows 'Running' status in the console, data will start flowing into BigQuery"
 echo ""

@@ -69,11 +69,13 @@ chmod +x deploy.sh
 </font>
 
 ## **That's it!**<br>
-### Here is what happens next:
+### Here is what happens once you run the script:
 <font size="5">
-The deployment should take 5 minutes or so to deploy everything.<br>
+1.  Build a container registry, containerize the applications and push to Artifact Registry<br>
+2.  Setup infrastructure with Terraform (Cloud Run, Cloud Tasks, Pub/Sub, Cloud Scheduler, Service Accounts, Storage Bucket, Dataset and Table Schema)<br>
+3.  Deploy the Dataflow pipeline<br>
 <br>
-The last part of the deployment is the dataflow pipeline.  Once dataflow is deployed, you will see 4 warning messages. That means the deployment is successful and the datastream is running.  You can leave the terminal and go to the dataflow dashboard in the GCP console for better visibility.
+4.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
 <br>
 
 # Dataflow Dashboard
