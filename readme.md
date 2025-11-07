@@ -71,13 +71,15 @@ chmod +x deploy.sh
 ## **That's it!**<br>
 ### Here is what happens once you run the script:
 <font size="5">
-1.  The script will first build a container registry, then containerize the applications and finally push to the Artifact Registry<br><br>
-2.  Deploy infrastructure with Terraform.  All services, service account and permissions will be deployed in roughly 1 minute.<br><br>
+1.  The script will first build a container registry, then containerize the applications and finally push to the registry.<br><br>
+2.  Deploy infrastructure with Terraform.  All services, service accounts and permissions will be deployed in roughly 1 minute.<br><br>
 3.  Once all infrastructure is deployed, the Dataflow pipeline will be launched in the background<br><br>
-4.  Once all service are deployed, you'll receive a message with links on where to check status of deployment.<br><br>
-5.  You may see cloud scheduler in a "failed" state, with some errors in cloud run.  This is normal, due to permission propagation.  Ignore these errors, as the permissions propagate in the background, it will self-correct.<br><br>
+4.  Once all services are deployed, you'll receive a message with links on where to check status of deployment.<br><br>
+5.  You may see cloud scheduler in a "failed" state, with some errors in the logs for cloud run.  This is normal, due to permission propagation.  Ignore these errors, as the permissions propagate in the background, it will self-correct.<br><br>
 6.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
 <br>
+7. To remove the infrastructure, go to the `4-terraform` folder and run `terraform destroy`.  You will have to manually delete container registry and the dataset in BigQuery.
+</font>
 
 # Dataflow Dashboard
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
