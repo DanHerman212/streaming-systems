@@ -164,12 +164,13 @@ def run():
             )
             | 'ParseAndFlatten' >> beam.ParDo(ParseAndFlatten())
             | 'WindowIntoFixedWindows' >> beam.WindowInto(
-                                            beam.window.FixedWindows(10),
+                                            beam.window.FixedWindows(30),  # 30-second windows (captures ~2 MTA updates)
                                             trigger=beam.trigger.AfterAny(
-                                                beam.trigger.AfterProcessingTime(5),
-                                                beam.trigger.AfterCount(50)
+                                                beam.trigger.AfterProcessingTime(5),  # Trigger after 5 seconds
+                                                beam.trigger.AfterPane(1)  # Or after first element (low latency)
                                             ),
-                                            accumulation_mode=beam.trigger.AccumulationMode.DISCARDING
+                                            accumulation_mode=beam.trigger.AccumulationMode.DISCARDING,
+                                            allowed_lateness=10  # Allow 10 seconds for late-arriving data
   )
             | 'FilterCurrentStatus' >> beam.Filter(lambda r: r.get('current_status'))
             | 'EnrichWithStops' >> beam.Map(
