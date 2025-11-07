@@ -75,6 +75,7 @@ chmod +x deploy.sh
 2.  Deploy infrastructure with Terraform.  All services, service account and permissions will be deployed in roughly 1 minute.<br><br>
 3.  Once all infrastructure is deployed, the Dataflow pipeline will be launched in the background<br><br>
 4.  Once all service are deployed, you'll receive a message with links on where to check status of deployment.<br><br>
+5.  You may see cloud scheduler in a "failed" state, with some errors in cloud run.  This is normal, due to permission propagation.  Ignore these errors, as the permissions propagate in the background, it will self-correct.<br><br>
 5.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
 <br>
 
