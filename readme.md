@@ -77,7 +77,7 @@ chmod +x deploy.sh
 4.  Once all services are deployed, you'll receive a message with links on where to check status of deployment.<br><br>
 5.  You may see cloud scheduler in a "failed" state, with some errors in the logs for cloud run.  This is normal, due to permission propagation.  Ignore these errors, as the permissions propagate in the background, it will self-correct.<br><br>
 6.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
-<br>
+<br><br>
 7. To remove the infrastructure, go to the `4-terraform` folder and run `terraform destroy`.  You will have to manually delete container registry and the dataset in BigQuery.
 </font>
 
