@@ -1,0 +1,44 @@
+[
+  {
+    "name": "trip_uid",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Unique identifier for the trip"
+  },
+  {
+    "name": "stop_id",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Unique identifier for the subway stop"
+  },
+  {
+    "name": "track",
+    "type": "STRING",
+    "mode": "NULLABLE",
+    "description": "Track designation (e.g., northbound/southbound track)"
+  },
+  {
+    "name": "arrival_time",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE",
+    "description": "Scheduled or actual arrival time at the stop"
+  },
+  {
+    "name": "departure_time",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE",
+    "description": "Scheduled or actual departure time from the stop"
+  },
+  {
+    "name": "last_observed",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE",
+    "description": "Last time the trip was observed in the system"
+  },
+  {
+    "name": "marked_past",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE",
+    "description": "Timestamp when this stop was marked as past"
+  }
+]
