@@ -12,7 +12,7 @@ We are polling the subway feed every 20 seconds, processing 3 messages per minut
 # Video Tutorial
 I will launch a video tutorial sometime soon to walk through the project.
 
-![Architecture Diagram](/6-images/architecture2.png) <br>
+![Architecture Diagram](6-images/architecture2.png) <br>
 <br>
 The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
@@ -41,7 +41,7 @@ Once the data is processed it will be written to BigQuery, available for analysi
 <font size="5">
 
 # Implementation Steps
-Most implementation is automated through Terraform<img src="6-images/tf.png" alt="drawing" width="50"/>
+Most implementation is automated through Terraform<img src="./6-images/tf.png" alt="drawing" width="50"/>
 
 # Quick Start 
 Deploy the entire pipeline with a single command! 
@@ -85,11 +85,11 @@ chmod +x deploy.sh
 It will take 3 minutes for Dataflow to get up and running.  You can check the data watermark lag on the first step of the pipeline.  That's the primary performance metric you should be concerned about.
 <br>
 
-![Dataflow Dashboard](/6-images/dataflow.png)
+![Dataflow Dashboard](6-images/dataflow.png)
 <bR><br>
 You can click the three small dots and expand the dashboard for better visibility.
 
-![Dataflow Dashboard Expanded](/6-images/1206.png)
+![Dataflow Dashboard Expanded](6-images/1206.png)
 
 # Data Dictionary
 Data definition can be found at [data dictionary page](data.md)<br>
@@ -105,19 +105,19 @@ Make sure to update your project-id in the queries before executing.
 ## Avg Time Between Trains and Frequency
 The range of time waiting for a train can be less than 2 minutes to over 16 minutes.  There is a clear correlation between busy stations and wait times.  Busier stations are served with <2 minute wait times.  <br>  The top 5 stations can be observed in the lower right quadrant.  The next insight will identify those stations.
 
-![Avg Time Between Train Arrivals](/6-images/avg-time-bet-trains.png)
+![Avg Time Between Train Arrivals](6-images/avg_time_bet_trains1.png)
 <br>
 
 # Top 10 Busiest Stations
 These are the busiest stations for the ACE line, based on total number of train arrivals in a 24 hour weekday period.
-![Top 10 Busiest Stations](/6-images/barplot.png)
+![Top 10 Busiest Stations](6-images/barplot.png)
 Fun Fact: [42-St Port Authority Terminal](https://www.mta.info/agency/new-york-city-transit/subway-bus-ridership-2024) (Times Square) has the most riders with 58 million paid passengers in 2024.
 
 # Idle Time Per Station
 
 The map represents the geographic footprint of all stations and average idle time per station.  Most stations show less than 30 second idle time, for the ACE line.
 
-![Idle Time Per Station](/6-images/idle.png)
+![Idle Time Per Station](6-images/idle.png)
 ---
 # Folder Structure
 ```
