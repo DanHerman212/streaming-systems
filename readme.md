@@ -21,6 +21,7 @@ We will containerize two applications and push them to the artifact registry.  T
 - Cloud Run: Serverless Application Execution<br>
 The event processor and task queue will be deployed for serverless execution on Cloud Run.
 <br>
+
 - Cloud Tasks: Queue Management<br>
 Provides granular control over task distribution and execution timing.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.
 <br>
@@ -32,6 +33,7 @@ Cloud scheduler will initiate triggers to Cloud Tasks every minute.  Since Cloud
 - Pub/Sub: Message Broker<br>
 Enterprise messaging bus provided by Google. We decouple the event feed from the data processing application as an architecture best practice.  Messages will be published to a topic, with Dataflow as the consumer pulling messages from the topic.
 <br>
+
 - Dataflow: Data Processing Engine<br>
 Dataflow provides a data processing pipeline specifically built for streaming data.
 The pipeline will include 4 transformation, to flatten, filter, enrich and apply windowing to our dataset before we write to BigQuery.<br>
