@@ -16,25 +16,28 @@ I will launch a video tutorial sometime soon to walk through the project.
 <br>
 The architecture uses the following GCP services:<br>
 - Artifact Registry: Universal Package Manager<br>
-There are two applications built with Flask that will be containerized to poll the MTA endpoint, executed through Cloud Run.  The first application is the event processor, which fetches messages and publishes to pubsub.  The next application is a task queue, which will setup 3 tasks to poll the event processor.  The first task will get fired off immediately, the second task will be scheduled on a 20 second delay and the third on a 40 second delay.  The task queue will be triggered every minute by Cloud Scheduler.  
+We will containerize two applications and push them to the artifact registry.  The first application is the event processor, which fetches messages from the MTA endpoint.  The second application is the task queue, which sends triggers to the event processor every 20 seconds to fetch messages.<br>
 
 - Cloud Run: Serverless Application Execution<br>
-The event processor and task queue will be deployed for serverless execution on Cloud Run<br>
-
+The event processor and task queue will be deployed for serverless execution on Cloud Run.
+<br>
 - Cloud Tasks: Queue Management<br>
-This is a workaround, since I was having trouble finding ways to poll the MTA endpoint continuously.  Cloud Run does not allow you to run a continuous loop in a container.  The container will time out after 12 minutes.  Cloud tasks allows us to distribute triggers asyncronously for granular controls of long running tasks.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.<br>
+Provides granular control over task distribution and execution timing.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.
+<br>
 
 - Cloud Scheduler: Cron Jobs (Event Triggers)<br>
-Creates event triggers on a schedule.  There is a constraint where the lowest time interval available is 1 minute.  You cannot schedule sub 1 minute triggers.  Therefore, we setup the workaround with Cloud Tasks, where we receive a trigger every minute and distribute 3 tasks in 20 second intervals, providing more granular control.<br>
+Cloud scheduler will initiate triggers to Cloud Tasks every minute.  Since Cloud Scheduler does not allow for sub-minute triggers, we use Cloud Tasks to distribute more granular triggers within each minute.
+<br>
 
 - Pub/Sub: Message Broker<br>
-Enterprise messaging bus provided by Google. The infrastructure processes 100 million messages per second.  Messages are fetched from the MTA and published to a pubsub topic.  There is a pubsub pull subscription setup with the consumer, which is Dataflow, the data processing engine.<br>
-
+Enterprise messaging bus provided by Google. We decouple the event feed from the data processing application as an architecture best practice.  Messages will be published to a topic, with Dataflow as the consumer pulling messages from the topic.
+<br>
 - Dataflow: Data Processing Engine<br>
-Dataflow consumes messages, applies transformations and writes to a relational database.  For this implementation there are 4 primary transforms, where we will first 1) Flatten 2) Filter 3) Enrich and 4) Apply windowing to our datset before we write to BigQuery.  The messages come in json and need to be flattened.  Most information in the feed is not required, so we will filter out 97% of the information.  After filtering, we will enrich with station information that is provided through a static csv file.  After enrichment, we will apply windowing to handle late arriving data and ensure data consistency.<br>
+Dataflow provides a data processing pipeline specifically built for streaming data.
+The pipeline will include 4 transformation, to flatten, filter, enrich and apply windowing to our dataset before we write to BigQuery.<br>
 
 - BigQuery: Data Warehouse<br>
-Once the data is processed it will be written to BigQuery, available for analysis between 7 - 35 seconds after the data is generated.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.
+Once the data is processed, it will be written to BigQuery.  The data watermark lag is between 7 - 35 seconds.  Writing to SQL accounts for most of the latency.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.
 </font>
 <br>
 
@@ -71,9 +74,9 @@ chmod +x deploy.sh
 ## **That's it!**<br>
 ### Here is what happens once you run the script:
 <font size="5">
-1.  The script will first build a container registry, then containerize the applications and finally push to the registry.<br><br>
-2.  Deploy infrastructure with Terraform.  All services, service accounts and permissions will be deployed in roughly 1 minute.<br><br>
-3.  Once all infrastructure is deployed, the Dataflow pipeline will be launched in the background<br><br>
+1.  The script will first build a container registry, then containerize and push to the registry.<br><br>
+2.  Terraform provides IaC (Infrastructure as Code).  All services, service accounts and permissions will be deployed in roughly 1 minute.<br><br>
+3.  Once all infrastructure is deployed, the Dataflow pipeline will be launched<br><br>
 4.  Once all services are deployed, you'll receive a message with links on where to check status of deployment.<br><br>
 5.  You may see cloud scheduler in a "failed" state, with some errors in the logs for cloud run.  This is normal, due to permission propagation.  Ignore these errors, as the permissions propagate in the background, it will self-correct.<br><br>
 6.  The "valve" for the data feed is cloud scheduler.  If you ever need to pause the data feed, just go to scheduler in the gcp console and pause the triggers.
@@ -121,48 +124,60 @@ The map represents the geographic footprint of all stations and average idle tim
 ---
 # Folder Structure
 ```
-├── 1-dataflow # dataflow pipeline script and utilities
-│   ├── dataflow.py
-│   └── replace_project_id.sh
-├── 2-event-processor # event processor application that fetches messages
-│   ├── Dockerfile
-│   ├── app.py
-│   └── requirements.txt
-├── 3-task-queue # task queue polls the event processor every 20 seconds
-│   ├── Dockerfile
-│   ├── main.py
-│   └── requirements.txt
-├── 4-terraform # terraform infrastructure as code - automates deployment in 1 minute
-│   ├── main.tf
-│   ├── modules
-│   │   ├── apis
-│   │   ├── cloud_run
-│   │   ├── cloud_tasks
-│   │   ├── pubsub
-│   │   ├── scheduler
-│   │   ├── service_accounts
-│   │   └── storage
-│   ├── outputs.tf
-│   ├── sample.tfvars
-│   ├── schema.json
-│   └── variables.tf
-├── 5-sql # a few sample SQL queries to experiment with
-│   ├── avg idle time by station.sql
-│   └── avg wait time and total trips per station.sql
-├── 6-images # just images for presentation
-│   ├── 0.5 Architecture.png
-│   ├── architecture2.png
-│   ├── avg_time_bet_trains1.png
-│   ├── barplot.png
-│   ├── dataflow.png
-│   ├── idle.png
-│   ├── image.png
-│   ├── scheduler.png
-│   ├── shell.png
-│   └── tf.png
-├── build_images.sh # script to automate container builds
+├── 1-dataflow # data processing pipeline script
+│   ├── dataflow.py
+│   └── replace_project_id.sh
+├── 2-event-processor # fetches messages from MTA event feed
+│   ├── Dockerfile
+│   ├── app.py
+│   └── requirements.txt
+├── 3-task-queue # sends triggers to event processor every 20 seconds
+│   ├── Dockerfile
+│   ├── main.py
+│   └── requirements.txt
+├── 4-terraform # infrastructure as code - automates deployment in 1 minute
+│   ├── main.tf
+│   ├── modules
+│   │   ├── apis
+│   │   ├── cloud_run
+│   │   ├── cloud_tasks
+│   │   ├── pubsub
+│   │   ├── scheduler
+│   │   ├── service_accounts
+│   │   └── storage
+│   ├── outputs.tf
+│   ├── sample.tfvars
+│   ├── schema.json
+│   └── variables.tf
+├── 5-sql # sql analysis scripts and ml dataset creation
+│   ├── avg_idle_time_by_station.sql
+│   ├── avg_time_between_trains.sql
+│   ├── create_ml_dataset_5stops_tables.sql
+│   ├── create_train_val_test_splits.sql
+│   └── create_training_samples.sql
+├── 6-images # for presentation purposes
+│   ├── 0.5 Architecture.png
+│   ├── 1206.png
+│   ├── architecture2.png
+│   ├── avg-time-bet-trains.png
+│   ├── avg_time_bet_trains1.png
+│   ├── barplot.png
+│   ├── dataflow.png
+│   ├── idle.png
+│   ├── image.png
+│   ├── scheduler.png
+│   ├── shell.png
+│   └── tf.png
+├── 7-data-archive-tools # tools to extract data from subway archive
+│   ├── delete_trips_files.py
+│   ├── download_historical_data.py
+│   └── load_to_bigquery.py
+├── build_images.sh # builds and pushes container images to artifact registry
 ├── data.md # data dictionary
-├── deploy.sh # one-command deployment script
-└── readme.md # this file
+├── deploy.sh # primary deployment script
+├── load_from_bigquery.py # loads data from bigquery for analysis
+├── load_stops_to_bigquery.py # loads static subway stop info to bigquery
+├── readme.md # this file
+└── schema_historical_sensor_data.json # bigquery schema for historical data
 ``` 
 </font>
