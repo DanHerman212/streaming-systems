@@ -33,7 +33,7 @@ Provides granular control over task distribution and execution timing.  The task
 Cloud scheduler will initiate triggers to Cloud Tasks every minute.  Since Cloud Scheduler does not allow for sub-minute triggers, we use Cloud Tasks to distribute more granular triggers within each minute.<br>
 
 - Pub/Sub: Message Broker<br>
-Enterprise messaging bus provided by Google. We decouple the event feed from the data processing application as an architecture best practice.  Messages will be published to a topic, with Dataflow as the consumer pulling messages from the topic.<br>
+Enterprise messaging bus provided by Google. We decouple the event feed from the data processing pipeline, as an architecture best practice.  Messages will be published to a topic, with Dataflow as the consumer pulling messages from the topic.<br>
 
 - Dataflow: Data Processing Engine<br>
 Dataflow provides a data processing pipeline specifically built for streaming data.
