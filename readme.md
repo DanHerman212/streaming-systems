@@ -19,29 +19,24 @@ The architecture uses the following GCP services:<br>
 We will containerize two applications and push them to the artifact registry.  The first application is the event processor, which fetches messages from the MTA endpoint.  The second application is the task queue, which sends triggers to the event processor every 20 seconds to fetch messages.<br>
 
 - Cloud Run: Serverless Application Execution<br>
-The event processor and task queue will be deployed for serverless execution on Cloud Run.
-<br>
+The event processor and task queue will be deployed for serverless execution on Cloud Run.<br>
 
 - Cloud Tasks: Queue Management<br>
-Provides granular control over task distribution and execution timing.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.
-<br>
+Provides granular control over task distribution and execution timing.  The task queue sends a `POST` message to the event processor every 20 seconds to fetch messages.<br>
 
 - Cloud Scheduler: Cron Jobs (Event Triggers)<br>
-Cloud scheduler will initiate triggers to Cloud Tasks every minute.  Since Cloud Scheduler does not allow for sub-minute triggers, we use Cloud Tasks to distribute more granular triggers within each minute.
-<br>
+Cloud scheduler will initiate triggers to Cloud Tasks every minute.  Since Cloud Scheduler does not allow for sub-minute triggers, we use Cloud Tasks to distribute more granular triggers within each minute.<br>
 
 - Pub/Sub: Message Broker<br>
-Enterprise messaging bus provided by Google. We decouple the event feed from the data processing application as an architecture best practice.  Messages will be published to a topic, with Dataflow as the consumer pulling messages from the topic.
-
+Enterprise messaging bus provided by Google. We decouple the event feed from the data processing application as an architecture best practice.  Messages will be published to a topic, with Dataflow as the consumer pulling messages from the topic.<br>
 
 - Dataflow: Data Processing Engine<br>
 Dataflow provides a data processing pipeline specifically built for streaming data.
 The pipeline will include 4 transformation, to flatten, filter, enrich and apply windowing to our dataset before we write to BigQuery.<br>
 
 - BigQuery: Data Warehouse<br>
-Once the data is processed, it will be written to BigQuery.  The data watermark lag is between 7 - 35 seconds.  Writing to SQL accounts for most of the latency.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.
+Once the data is processed, it will be written to BigQuery.  The data watermark lag is between 7 - 35 seconds.  Writing to SQL accounts for most of the latency.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.<br>
 </font>
-<br>
 
 <font size="5">
 
