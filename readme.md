@@ -14,7 +14,12 @@ I will launch a video tutorial sometime soon to walk through the project.
 
 ![Architecture Diagram](6-images/architecture2.png) <br>
 <br>
-The architecture uses the following GCP services:<br>
+
+# Architecture
+The architecture is serverless with autoscaling capability.  Designed for rapid deployment and to scale with fluctuating volumes of streaming data.<br>
+
+Components are listed as follows:
+
 - Artifact Registry: Universal Package Manager<br>
 We will containerize two applications and push them to the artifact registry.  The first application is the event processor, which fetches messages from the MTA endpoint.  The second application is the task queue, which sends triggers to the event processor every 20 seconds to fetch messages.<br>
 
