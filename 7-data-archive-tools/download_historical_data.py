@@ -55,11 +55,15 @@ def download_and_upload(date):
         client = storage.Client(project=PROJECT_ID)
         bucket = client.bucket(GCS_BUCKET_NAME)
         
-        # Check if decompressed CSVs already exist (final state)
-        decompressed_prefix = f"{GCS_DECOMPRESSED_PREFIX}{date_str}/"
-        blobs = list(bucket.list_blobs(prefix=decompressed_prefix, max_results=1))
-        if blobs:
-            return (date_str, "SKIPPED", "CSVs already decompressed in GCS", None)
+        # Check if decompressed CSVs already exist in year-month folder
+        year_month = date_str[:7]  # "YYYY-MM"
+        # Check for any CSV file from this date in the monthly folder
+        decompressed_prefix = f"{GCS_DECOMPRESSED_PREFIX}{year_month}/"
+        blobs = list(bucket.list_blobs(prefix=decompressed_prefix))
+        # Check if any blob contains this specific date in filename
+        date_exists = any(date_str in blob.name for blob in blobs)
+        if date_exists:
+            return (date_str, "SKIPPED", f"CSVs already in {year_month}/", None)
         
         # Download file from subwaydata.nyc
         response = requests.get(url, timeout=120, stream=True)
@@ -84,7 +88,7 @@ def download_and_upload(date):
 def decompress_and_upload(compressed_gcs_path):
     """
     Download compressed file from GCS, decompress .tar.xz, extract CSVs,
-    upload CSVs back to GCS, and delete the compressed file.
+    upload CSVs back to GCS in YEAR-MONTH folder structure, and delete the compressed file.
     
     Args:
         compressed_gcs_path: GCS path to the compressed file (e.g., "raw/subwaydatanyc_2024-11-07_csv.tar.xz")
@@ -96,6 +100,9 @@ def decompress_and_upload(compressed_gcs_path):
         # Extract date from filename
         file_name = os.path.basename(compressed_gcs_path)
         date_str = file_name.replace("subwaydatanyc_", "").replace("_csv.tar.xz", "")
+        
+        # Extract year-month for new folder structure (e.g., "2024-11")
+        year_month = date_str[:7]  # "YYYY-MM"
         
         client = storage.Client(project=PROJECT_ID)
         bucket = client.bucket(GCS_BUCKET_NAME)
@@ -119,14 +126,15 @@ def decompress_and_upload(compressed_gcs_path):
             with tarfile.open(tar_path, 'r') as tar:
                 tar.extractall(path=extract_dir)
             
-            # Step 3: Upload all CSV files to GCS
+            # Step 3: Upload all CSV files to GCS in YEAR-MONTH folders
             csv_count = 0
             total_size = 0
             for root, dirs, files in os.walk(extract_dir):
                 for file in files:
                     if file.endswith('.csv'):
                         local_csv_path = os.path.join(root, file)
-                        gcs_csv_path = f"{GCS_DECOMPRESSED_PREFIX}{date_str}/{file}"
+                        # New structure: decompressed/YYYY-MM/filename_YYYY-MM-DD.csv
+                        gcs_csv_path = f"{GCS_DECOMPRESSED_PREFIX}{year_month}/{file}"
                         
                         csv_blob = bucket.blob(gcs_csv_path)
                         csv_blob.upload_from_filename(local_csv_path)
@@ -138,7 +146,7 @@ def decompress_and_upload(compressed_gcs_path):
             blob.delete()
             
             total_size_mb = total_size / (1024 * 1024)
-            return (date_str, "DECOMPRESSED", f"Extracted {csv_count} CSVs ({total_size_mb:.2f} MB), deleted compressed file")
+            return (date_str, "DECOMPRESSED", f"Extracted {csv_count} CSVs to {year_month}/ ({total_size_mb:.2f} MB)")
             
     except Exception as e:
         return (date_str, "DECOMPRESS_ERROR", str(e))

@@ -40,7 +40,8 @@ Dataflow provides a data processing pipeline specifically built for streaming da
 The pipeline will include 4 transformation, to flatten, filter, enrich and apply windowing to our dataset before we write to BigQuery.<br>
 
 - BigQuery: Data Warehouse<br>
-Once the data is processed, it will be written to BigQuery.  The data watermark lag is between 7 - 35 seconds.  Writing to SQL accounts for most of the latency.  For faster read/write, where lower latency is a requirement, BigTable can be plugged in as an alternative data sink.<br>
+Once the data is processed, it will be written to BigQuery.  Dataflow writes to BigQuery streaming inserts, which provides near real-time data availability for analysis using a temporary buffer.  There are [limits](https://docs.cloud.google.com/bigquery/quotas) on how much data you can process in a given project.  The data is eventually moved from the buffer to permanent storage every 90 minutes. The alternative is to process a job <br>
+<br>
 </font>
 
 <font size="5">
